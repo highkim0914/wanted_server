@@ -1,4 +1,4 @@
-package com.risingtest.wanted.src.sms;
+package com.risingtest.wanted.src.sms.model;
 
 import lombok.NoArgsConstructor;
 import lombok.Getter;

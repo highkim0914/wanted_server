@@ -67,11 +67,10 @@ public class UserDao {
     }
 
     public int checkEmail(String email){
-        String checkEmailQuery = "select exists(select email from User where email = ?)";
-        String checkEmailParams = email;
+        String checkEmailQuery = "select exists(select email from user where email = ?)";
         return this.jdbcTemplate.queryForObject(checkEmailQuery,
                 int.class,
-                checkEmailParams);
+                email);
 
     }
 

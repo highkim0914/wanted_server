@@ -8,5 +8,5 @@ EC2 & RDS 인스턴스 생성
 ### - 2022.06.26 
 서브 도메인 생성 - dev.odoong.shop / prod.odoong.shop  
 SSL 적용  
-API 명세서 수정 - SMS 인증 서비스  
-API 명세서 작성 - 회원가입/로그인/SMS 인증
+API 명세서 수정 - SMS 인증 서비스 추가 
+API 명세서 작성 및 구현 - 회원가입/로그인/SMS 인증

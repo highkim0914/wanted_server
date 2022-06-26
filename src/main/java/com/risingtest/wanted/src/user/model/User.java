@@ -15,7 +15,7 @@ import javax.persistence.Id;
 public class User {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String userName;
     private String password;
     private String email;

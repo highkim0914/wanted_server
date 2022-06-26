@@ -2,6 +2,7 @@ package com.risingtest.wanted.src.sms;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponse;
+import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.config.secret.Secret;
 import com.risingtest.wanted.utils.JwtService;
 import net.nurigo.sdk.NurigoApp;
@@ -9,6 +10,7 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +26,13 @@ public class SmsService {
 
     final DefaultMessageService messageService;
 
+    private JwtService jwtService;
+
     private Map<String, String> phoneNumberCodeMap = new HashMap<>();
 
-    public SmsService() {
+    @Autowired
+    public SmsService(JwtService jwtService) {
+        this.jwtService = jwtService;
         this.messageService = NurigoApp.INSTANCE.initialize(Secret.SMS_API_KEY, Secret.SMS_API_SECRET_KEY, "https://api.coolsms.co.kr");
     }
 
@@ -47,6 +53,18 @@ public class SmsService {
         System.out.println(response);
 
         return response;
+    }
+
+    public PostSmsAuthenticationRes authenticate(PostSmsAuthenticationReq postSmsAuthenticationReq)throws BaseException{
+        String phoneNumber = postSmsAuthenticationReq.getPhoneNumber().replace("-","");
+        String code = postSmsAuthenticationReq.getCode();
+        if(isValidCode(phoneNumber, code)) {
+            String jwt = jwtService.createJwtUsingPhoneNumber(postSmsAuthenticationReq.getPhoneNumber());
+            return new PostSmsAuthenticationRes(jwt);
+        }
+        else
+            throw new BaseException(BaseResponseStatus.SMS_WRONG_CODE);
+
     }
 
     public boolean isValidCode(String phoneNumber, String code) {

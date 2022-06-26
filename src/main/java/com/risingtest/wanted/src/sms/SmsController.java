@@ -15,12 +15,9 @@ public class SmsController {
 
     private final SmsService smsService;
 
-    private final JwtService jwtService;
-
     @Autowired
     public SmsController(SmsService smsService, JwtService jwtService) {
         this.smsService = smsService;
-        this.jwtService = jwtService;
     }
     @PostMapping
     public BaseResponse<String> createAuthenticationCode(@RequestBody PostSmsReq postSmsReq){
@@ -37,18 +34,17 @@ public class SmsController {
     }
 
     @PostMapping("/authentication")
-    public BaseResponse<PostSmsAuthenticationRes> authenticateCode(@RequestBody PostSmsAuthenticationReq smsAuthenticationDto){
-        if(!ValidationRegex.isRegexPhoneNumber(smsAuthenticationDto.getPhoneNumber())){
+    public BaseResponse<PostSmsAuthenticationRes> authenticateCode(@RequestBody PostSmsAuthenticationReq postSmsAuthenticationReq){
+        if(!ValidationRegex.isRegexPhoneNumber(postSmsAuthenticationReq.getPhoneNumber())){
             return new BaseResponse<>(BaseResponseStatus.SMS_INVALID_PHONE_NUMBER);
         }
-        String phoneNumber = smsAuthenticationDto.getPhoneNumber().replace("-","");
-        String code = smsAuthenticationDto.getCode();
-        if(smsService.isValidCode(phoneNumber, code)) {
-            String jwt = jwtService.createJwtUsingPhoneNumber(phoneNumber);
-            return new BaseResponse<>(new PostSmsAuthenticationRes(jwt));
+        try {
+            PostSmsAuthenticationRes postSmsAuthenticationRes = smsService.authenticate(postSmsAuthenticationReq);
+            return new BaseResponse<>(postSmsAuthenticationRes);
         }
-        else
-            return new BaseResponse<>(BaseResponseStatus.SMS_WRONG_CODE);
+        catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
 
     }
 }

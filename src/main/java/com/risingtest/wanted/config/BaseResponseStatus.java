@@ -22,7 +22,7 @@ public enum BaseResponseStatus {
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
 
-    SMS_INVALID_PHONE_NUMBER(false, 2005, "전화번호 형식을 확인해주세요"),
+    SMS_INVALID_PHONE_NUMBER(false, 2005, "전화번호 형식을 확인해주세요."),
 
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
@@ -32,6 +32,8 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
     POST_USERS_INVALID_PHONE_NUMBER(false,2018,"전화번호 형식을 확인해주세요."),
+    POST_USERS_EMPTY_TOKEN(false,2019,"전화번호 인증을 진행해주세요."),
+    POST_USERS_INVALID_JWT(false, 2020, "유효하지 않은 전화번호 토큰입니다."),
 
 
 

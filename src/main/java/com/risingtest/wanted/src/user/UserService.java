@@ -40,6 +40,10 @@ public class UserService {
             throw new BaseException(POST_USERS_EXISTS_EMAIL);
         }
 
+        if(!jwtService.getPhoneNumber().equals(postUserReq.getPhoneNumber())){
+            throw new BaseException(INVALID_JWT);
+        }
+
         String pwd;
         try{
             //암호화

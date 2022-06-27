@@ -2,7 +2,12 @@ server:
   port:
     7000
 
+
+
 spring:
+  devtools:
+    livereload:
+      enabled: true
   activate:
     on-profile:
       - local

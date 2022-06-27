@@ -35,6 +35,8 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_TOKEN(false,2019,"전화번호 인증을 진행해주세요."),
     POST_USERS_INVALID_JWT(false, 2020, "유효하지 않은 전화번호 토큰입니다."),
 
+    GET_RECRUIT_NO_RECRUIT(false, 2060, "존재하지 않는 채용 공고입니다."),
+
 
 
     /**

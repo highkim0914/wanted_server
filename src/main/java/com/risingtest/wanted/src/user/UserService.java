@@ -6,6 +6,7 @@ import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.src.user.model.PatchUserReq;
 import com.risingtest.wanted.src.user.model.PostUserReq;
 import com.risingtest.wanted.src.user.model.PostUserRes;
+import com.risingtest.wanted.src.user.model.User;
 import com.risingtest.wanted.utils.JwtService;
 import com.risingtest.wanted.utils.SHA256;
 import org.slf4j.Logger;
@@ -23,14 +24,15 @@ public class UserService {
     private final UserDao userDao;
     private final UserProvider userProvider;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
 
     @Autowired
-    public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService) {
+    public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService, UserRepository userRepository) {
         this.userDao = userDao;
         this.userProvider = userProvider;
         this.jwtService = jwtService;
-
+        this.userRepository = userRepository;
     }
 
     //POST
@@ -54,7 +56,8 @@ public class UserService {
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
         }
         try{
-            long userIdx = userDao.createUser(postUserReq);
+            User user = userRepository.save(postUserReq.toEntity());
+            long userIdx = user.getId();
             //jwt 발급.
             String jwt = jwtService.createJwt(userIdx);
             return new PostUserRes(jwt,userIdx);

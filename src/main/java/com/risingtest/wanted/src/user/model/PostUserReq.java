@@ -12,4 +12,13 @@ public class PostUserReq {
     private String email;
     private String password;
     private String phoneNumber;
+
+    public User toEntity(){
+        return User.builder()
+                .userName(userName)
+                .email(email)
+                .password(password)
+                .phoneNumber(phoneNumber)
+                .build();
+    }
 }

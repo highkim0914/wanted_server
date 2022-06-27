@@ -1,5 +1,6 @@
 package com.risingtest.wanted.src.user.model;
 
+import com.risingtest.wanted.config.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -10,9 +11,9 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private long id;

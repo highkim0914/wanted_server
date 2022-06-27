@@ -36,3 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/java/com/risingtest/wanted/config/secret/Secret.java
+/src/main/resources/config/application.yml

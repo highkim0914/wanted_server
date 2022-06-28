@@ -42,16 +42,19 @@ public class SmsService {
         message.setTo(phoneNumber);
         String randomString = String.valueOf(generateAuthNo1());
         message.setText("인증번호 ["+ randomString + "] 를 입력해주세요");
-        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-        if(response.getStatusCode().equals("2000")){
-            phoneNumberCodeMap.put(phoneNumber,randomString);
+        try {
+            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            if(response.getStatusCode().equals("2000")){
+                phoneNumberCodeMap.put(phoneNumber,randomString);
+            }
+            System.out.println(response);
+
+            return response;
         }
-        else {
+        catch (Exception e){
             throw new BaseException(SMS_ERROR);
         }
-        System.out.println(response);
 
-        return response;
     }
 
     public PostSmsAuthenticationRes authenticate(PostSmsAuthenticationReq postSmsAuthenticationReq)throws BaseException{

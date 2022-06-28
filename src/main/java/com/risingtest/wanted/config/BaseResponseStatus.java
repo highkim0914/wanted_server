@@ -36,6 +36,7 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_JWT(false, 2020, "유효하지 않은 전화번호 토큰입니다."),
 
     GET_RECRUIT_NO_RECRUIT(false, 2060, "존재하지 않는 채용 공고입니다."),
+    GET_RECRUIT_TOO_MANY_YEARS(false, 2061, "years는 최대 2개까지만 사용 가능합니다."),
 
 
 

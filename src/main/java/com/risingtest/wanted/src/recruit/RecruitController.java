@@ -41,7 +41,7 @@ public class RecruitController {
     )
     {
         if(years.size()>2){
-            return new BaseResponse<>(BaseResponseStatus.REQUEST_ERROR);
+            return new BaseResponse<>(BaseResponseStatus.GET_RECRUIT_TOO_MANY_YEARS);
         }
         List<BasicRecruitRes> list = recruitProvider.getRecruitsWithFilter(jobGroup,years,  positions, locations, hashtags, techstacks);
         if(!hasData){

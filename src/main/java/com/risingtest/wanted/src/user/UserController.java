@@ -2,6 +2,7 @@ package com.risingtest.wanted.src.user;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponse;
+import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.src.user.model.*;
 import com.risingtest.wanted.utils.JwtService;
 import org.slf4j.Logger;
@@ -54,6 +55,31 @@ public class UserController {
             return new BaseResponse<>(getUsersRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/emails")
+    public BaseResponse<BaseResponseStatus> checkAvailableEmail(@RequestParam(name = "email") String email){
+        if(email == null){
+            return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
+        }
+        //이메일 정규표현
+        if(!isRegexEmail(email)){
+            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+        }
+
+        try {
+            logger.info("check email : " + email);
+            if(userProvider.checkEmail(email)==1){
+                return new BaseResponse<>(POST_USERS_EXISTS_EMAIL);
+            }
+            else {
+                return new BaseResponse<>(SUCCESS);
+            }
+        }
+        catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
         }
     }
 
@@ -121,6 +147,9 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+
+
 
     /**
      * 유저정보변경 API

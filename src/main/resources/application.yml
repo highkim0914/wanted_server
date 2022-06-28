@@ -6,6 +6,10 @@ server:
       min-spare: 10
       max: 20
 
+logging:
+  level:
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE
 
 spring:
   devtools:
@@ -19,11 +23,13 @@ spring:
     url: jdbc:mysql://localhost:3306/wanted_clone
     username: root
     password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 41
+    driver-class-name: org.mariadb.jdbc.Driver
+#    hikari:
+#      leak-detection-threshold: 2000
+#      maximum-pool-size: 41
+#      max-lifetime: 3000000
   jpa:
-    show-sql: true
+    #show-sql: true
     properties:
       hibernate:
         format_sql : true

@@ -1,6 +1,8 @@
 package com.risingtest.wanted.src.recruit;
 
-import com.risingtest.wanted.src.hashtag.RecruitHashtag;
+import com.risingtest.wanted.src.hashtag.CompanyHashtag;
+import com.risingtest.wanted.src.recruit.model.Recruit;
+import com.risingtest.wanted.src.techstack.CompanyTechstack;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -78,7 +80,8 @@ public class RecruitSpecification {
             @Override
             public Predicate toPredicate(Root<Recruit> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.disjunction();
-                ListJoin<Recruit, RecruitHashtag> listJoin = root.joinList("recruitHashtags",JoinType.LEFT);
+                //ListJoin<Recruit, CompanyHashtag> listJoin = root.joinList("recruitHashtags",JoinType.LEFT);
+                ListJoin<Recruit, CompanyHashtag> listJoin = root.join("company").joinList("companyHashtags",JoinType.LEFT);
                 predicate.getExpressions().add(listJoin.get("hashtag").in(hashtags));
                 return predicate;
                 //return criteriaBuilder.in(listJoin.in(hashtags));
@@ -91,7 +94,7 @@ public class RecruitSpecification {
             @Override
             public Predicate toPredicate(Root<Recruit> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.disjunction();
-                ListJoin<Recruit, RecruitHashtag> listJoin = root.joinList("recruitTechstacks",JoinType.LEFT);
+                ListJoin<Recruit, CompanyTechstack> listJoin = root.join("company").joinList("companyTechstacks",JoinType.LEFT);
                 predicate.getExpressions().add(listJoin.get("techstack").in(techstacks));
                 return predicate;
                 //return criteriaBuilder.in(listJoin.in(hashtags));

@@ -1,15 +1,16 @@
 server:
   port:
     7000
-  tomcat:
-    threads:
-      min-spare: 10
-      max: 20
-
-logging:
-  level:
-    com.zaxxer.hikari.HikariConfig: DEBUG
-    com.zaxxer.hikari: TRACE
+#  tomcat:
+#    threads:
+#      min-spare: 10
+#      max: 20
+#
+#logging:
+#  level:
+#    com.zaxxer.hikari.HikariConfig: DEBUG
+#    com.zaxxer.hikari: TRACE
+#    com.risingtest.wanted.src.user: INFO
 
 spring:
   devtools:
@@ -23,13 +24,13 @@ spring:
     url: jdbc:mysql://localhost:3306/wanted_clone
     username: root
     password: root
-    driver-class-name: org.mariadb.jdbc.Driver
-#    hikari:
-#      leak-detection-threshold: 2000
-#      maximum-pool-size: 41
-#      max-lifetime: 3000000
+#    driver-class-name: org.mysql.jdbc.Driver
+    hikari:
+      idle-timeout: 28799970
+      leak-detection-threshold: 2000
+      max-lifetime: 28799970
   jpa:
-    #show-sql: true
+    show-sql: true
     properties:
       hibernate:
         format_sql : true
@@ -42,3 +43,8 @@ spring:
 
   jwt:
     secret-key: SECRET_KEY
+
+app:
+  upload:
+    #dir : /home/ubuntu/images/users
+    dir : C://wanted//images

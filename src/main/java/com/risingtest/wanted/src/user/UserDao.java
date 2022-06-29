@@ -55,24 +55,7 @@ public class UserDao {
                         rs.getString("password")),
                 getUserParams);
     }
-    
 
-    public long createUser(PostUserReq postUserReq){
-        String createUserQuery = "insert into user (user_name, password, email, phone_number) VALUES (?,?,?,?)";
-        Object[] createUserParams = new Object[]{postUserReq.getUserName(), postUserReq.getPassword(), postUserReq.getEmail(), postUserReq.getPhoneNumber()};
-        this.jdbcTemplate.update(createUserQuery, createUserParams);
-
-        String lastInserIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInserIdQuery,Long.class);
-    }
-
-    public int checkEmail(String email){
-        String checkEmailQuery = "select exists(select email from user where email = ?)";
-        return this.jdbcTemplate.queryForObject(checkEmailQuery,
-                int.class,
-                email);
-
-    }
 
     public int modifyUserName(PatchUserReq patchUserReq){
         String modifyUserNameQuery = "update User set userName = ? where userIdx = ? ";
@@ -81,22 +64,6 @@ public class UserDao {
         return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
     }
 
-    public User getPwd(PostLoginReq postLoginReq){
-        String getPwdQuery = "select * from user where email = ?";
-        String getPwdParams = postLoginReq.getEmail();
-
-        return this.jdbcTemplate.queryForObject(getPwdQuery,
-                (rs,rowNum)-> new User(
-                        rs.getLong("id"),
-                        rs.getString("user_name"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("phone_number")
-                ),
-                getPwdParams
-                );
-
-    }
 
 
 }

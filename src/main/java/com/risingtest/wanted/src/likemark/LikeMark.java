@@ -1,10 +1,9 @@
-package com.risingtest.wanted.src.hashtag;
+package com.risingtest.wanted.src.likemark;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
-
-import com.risingtest.wanted.src.recruit.Recruit;
+import com.risingtest.wanted.src.recruit.model.Recruit;
+import com.risingtest.wanted.src.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,20 +18,18 @@ import javax.persistence.*;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Entity
-public class RecruitHashtag extends BaseEntity {
+public class LikeMark extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id",nullable = false,updatable = false)
+    @JsonBackReference
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "recruit_id",nullable = false,updatable = false)
     @JsonBackReference
     private Recruit recruit;
-
-    @ManyToOne
-    @JoinColumn(name = "hashtag_id",nullable = false,updatable = false)
-    @JsonManagedReference
-    private Hashtag hashtag;
-
-
 }

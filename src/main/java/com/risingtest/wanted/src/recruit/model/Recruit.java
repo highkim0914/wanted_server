@@ -1,11 +1,12 @@
-package com.risingtest.wanted.src.recruit;
+package com.risingtest.wanted.src.recruit.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
+import com.risingtest.wanted.src.bookmark.Bookmark;
 import com.risingtest.wanted.src.company.Company;
-import com.risingtest.wanted.src.hashtag.RecruitHashtag;
-import com.risingtest.wanted.src.techstack.RecruitTechstack;
+import com.risingtest.wanted.src.jobapplication.JobApplication;
+import com.risingtest.wanted.src.likemark.LikeMark;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,15 +26,6 @@ public class Recruit extends BaseEntity {
 
     private String title;
 
-    @ManyToOne
-    @JsonBackReference
-    private Company company;
-
-    @OneToMany(mappedBy = "recruit")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<RecruitHashtag> recruitHashtags;
-
     private String detail;
 
     private double response_rate;
@@ -44,16 +36,29 @@ public class Recruit extends BaseEntity {
 
     private int career;
 
-    @OneToMany(mappedBy = "recruit")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<RecruitTechstack> recruitTechstacks;
-
     private String location;
 
     private LocalDate deadline;
 
-    private String photos;
-
     private long views;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id",nullable = false,updatable = false)
+    @JsonBackReference
+    private Company company;
+
+    @OneToMany(mappedBy = "recruit")
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<LikeMark> likeMarks;
+
+    @OneToMany(mappedBy = "recruit")
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<Bookmark> bookmarks;
+
+    @OneToMany(mappedBy = "recruit")
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<JobApplication> jobApplications;
 }

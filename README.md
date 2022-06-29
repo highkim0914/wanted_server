@@ -19,3 +19,9 @@ CORS 이슈 - CorsFilter 재정의 통해 해결
 API 명세서 추가 - 이메일 검증 추가  
 AWS Hikari pool 이슈 - 드라이버 클라이언트 변경 시도  
 
+### - 2022.06.29
+API 명세서 구현 - 북마크 생성
+API 명세서 수정 - 채용공고 조회 부분 FE 분들과 협의한 대로 수정
+ERD에 맞춰 Entity 구성  
+AWS x -> JPA Hikari pool 이슈 - 아직 있는 듯 함. java 버전이 원인일 수 있어 java8로 변경함.
+

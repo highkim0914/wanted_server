@@ -2,7 +2,6 @@ package com.risingtest.wanted.src.techstack;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
-import com.risingtest.wanted.src.hashtag.RecruitHashtag;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,7 +23,7 @@ public class Techstack extends BaseEntity {
     @OneToMany(mappedBy = "techstack")
     @ToString.Exclude
     @JsonBackReference
-    private List<RecruitTechstack> recruitTechstacks;
+    private List<CompanyTechstack> companyTechstacks;
 
     private String name;
 }

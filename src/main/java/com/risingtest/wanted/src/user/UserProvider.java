@@ -2,10 +2,8 @@ package com.risingtest.wanted.src.user;
 
 
 import com.risingtest.wanted.config.BaseException;
-import com.risingtest.wanted.src.user.model.GetUserRes;
-import com.risingtest.wanted.src.user.model.PostLoginReq;
-import com.risingtest.wanted.src.user.model.PostLoginRes;
-import com.risingtest.wanted.src.user.model.User;
+import com.risingtest.wanted.config.BaseResponseStatus;
+import com.risingtest.wanted.src.user.model.*;
 import com.risingtest.wanted.utils.JwtService;
 import com.risingtest.wanted.utils.SHA256;
 import org.slf4j.Logger;
@@ -21,58 +19,51 @@ import static com.risingtest.wanted.config.BaseResponseStatus.*;
 @Service
 public class UserProvider {
 
-    private final UserDao userDao;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public UserProvider(UserDao userDao, JwtService jwtService) {
-        this.userDao = userDao;
+    public UserProvider(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
-    public List<GetUserRes> getUsers() throws BaseException {
-        try{
-            List<GetUserRes> getUserRes = userDao.getUsers();
-            return getUserRes;
-        }
-        catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    public List<GetUserRes> getUsersByEmail(String email) throws BaseException{
-        try{
-            List<GetUserRes> getUsersRes = userDao.getUsersByEmail(email);
-            return getUsersRes;
-        }
-        catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-
-    public GetUserRes getUser(int userIdx) throws BaseException {
+    public GetMiniUserRes getMiniUser(long id) throws BaseException {
         try {
-            GetUserRes getUserRes = userDao.getUser(userIdx);
-            return getUserRes;
+            User user  = userRepository.findById(id)
+                    .orElseThrow(()->new BaseException(USERS_EMPTY_USER_ID));
+            return GetMiniUserRes.from(user);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public int checkEmail(String email) throws BaseException{
+    public GetUserRes getUser(long id) throws BaseException {
+        try {
+            User user  = userRepository.findById(id)
+                    .orElseThrow(()->new BaseException(USERS_EMPTY_USER_ID));
+            return GetUserRes.from(user);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public boolean isAlreadyRegisteredEmail(String email) throws BaseException{
         try{
-            return userDao.checkEmail(email);
+            //return userDao.checkEmail(email);
+            return userRepository.findByEmail(email).isPresent();
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException{
-        User user = userDao.getPwd(postLoginReq);
+//        User user = userDao.getPwd(postLoginReq);
+        User user = userRepository.findByEmail(postLoginReq.getEmail())
+                .orElseThrow(()->new BaseException(BaseResponseStatus.LOGIN_USER_NO_EMAIL));
         String encryptPwd;
         try {
             encryptPwd= SHA256.encrypt(postLoginReq.getPassword());

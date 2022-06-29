@@ -2,11 +2,13 @@ package com.risingtest.wanted.src.recruit;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.recruit.dto.BasicRecruitRes;
+import com.risingtest.wanted.src.recruit.model.BasicRecruitRes;
+import com.risingtest.wanted.src.recruit.model.Recruit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,10 +38,10 @@ public class RecruitProvider {
         return list;
     }
 
-    public List<BasicRecruitRes> getRecruitById(long id) throws BaseException {
+    public Recruit getRecruitById(long id) throws BaseException {
 
         Recruit recruit = recruitRepository.findById(id)
                 .orElseThrow(()->new BaseException(BaseResponseStatus.GET_RECRUIT_NO_RECRUIT));
-        return List.of(BasicRecruitRes.from(recruit));
+        return recruit;
     }
 }

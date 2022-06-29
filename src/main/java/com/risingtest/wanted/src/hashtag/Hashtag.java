@@ -1,9 +1,7 @@
 package com.risingtest.wanted.src.hashtag;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
-import com.risingtest.wanted.src.recruit.Recruit;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,7 +24,7 @@ public class Hashtag extends BaseEntity {
     @OneToMany(mappedBy = "hashtag")
     @ToString.Exclude
     @JsonBackReference
-    private List<RecruitHashtag> hashtags;
+    private List<CompanyHashtag> hashtags;
 
     private String name;
 }

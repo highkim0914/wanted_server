@@ -34,11 +34,21 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_PHONE_NUMBER(false,2018,"전화번호 형식을 확인해주세요."),
     POST_USERS_EMPTY_TOKEN(false,2019,"전화번호 인증을 진행해주세요."),
     POST_USERS_INVALID_JWT(false, 2020, "유효하지 않은 전화번호 토큰입니다."),
+    INVALID_EMPLOYEE_NUMBER(false, 2021, "적절한 직원수 입력이 아닙니다. (10인 이상 필수)"),
+    INVALID_ESTABLISHMENT_YEAR(false,2022,"적절한 설립년도가 아닙니다."),
+
+    LOGIN_USER_NO_EMAIL(false,2030,"존재하지 않는 이메일입니다."),
 
     GET_RECRUIT_NO_RECRUIT(false, 2060, "존재하지 않는 채용 공고입니다."),
     GET_RECRUIT_TOO_MANY_YEARS(false, 2061, "years는 최대 2개까지만 사용 가능합니다."),
 
+    POST_BOOKMARK_EXISTS(false,2070,"이미 북마크되어 있는 채용공고입니다."),
+    NO_BOOKMARK(false,2071,"북마크되지 않은 채용공고입니다."),
+    NO_COMPANY(false,2080,"존재하지 않는 회사입니다."),
 
+    UPLOAD_IMAGE_FAIL(false,2500,"이미지 업로드 오류입니다."),
+    UPLOAD_IMAGE_INVALID_FILENAME(false,2501,"이미지 파일 이름을 확인해주세요."),
+    DELETE_IMAGE_FAIL(false,2502,"이미지 삭제에 실패했습니다."),
 
     /**
      * 3000 : Response 오류

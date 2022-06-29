@@ -1,0 +1,42 @@
+package com.risingtest.wanted.src.education;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.risingtest.wanted.config.BaseEntity;
+import com.risingtest.wanted.src.resume.Resume;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
+@Entity
+public class Education extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private Boolean isInService;
+
+    private String schoolName;
+
+    private String majorDegree;
+
+    private String detail;
+
+    @ManyToOne
+    @JoinColumn(name = "resume_id",nullable = false,updatable = false)
+    @JsonBackReference
+    private Resume resume;
+}

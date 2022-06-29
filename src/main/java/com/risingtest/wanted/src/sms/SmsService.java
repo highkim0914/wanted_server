@@ -69,13 +69,19 @@ public class SmsService {
 
     }
 
-    public boolean isValidCode(String phoneNumber, String code) {
-        if(phoneNumberCodeMap.get(phoneNumber).equals(code)){
-            phoneNumberCodeMap.remove(phoneNumber);
-            return true;
+    public boolean isValidCode(String phoneNumber, String code) throws BaseException{
+        try {
+            if(phoneNumberCodeMap.get(phoneNumber).equals(code)){
+                phoneNumberCodeMap.remove(phoneNumber);
+                return true;
+            }
+            else
+                return false;
         }
-        else
-            return false;
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.SMS_WRONG_CODE);
+        }
+
     }
 
     public int generateAuthNo1() {

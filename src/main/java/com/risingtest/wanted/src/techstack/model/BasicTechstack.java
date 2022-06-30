@@ -1,8 +1,7 @@
-package com.risingtest.wanted.src.techstack;
+package com.risingtest.wanted.src.techstack.model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor

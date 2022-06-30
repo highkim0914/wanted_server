@@ -1,5 +1,6 @@
 package com.risingtest.wanted.src.techstack;
 
+import com.risingtest.wanted.src.techstack.model.BasicTechstack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 import static com.risingtest.wanted.config.BaseResponseStatus.*;
 import static com.risingtest.wanted.utils.ValidationRegex.isRegexEmail;
 import static com.risingtest.wanted.utils.ValidationRegex.isRegexPhoneNumber;
@@ -37,6 +35,7 @@ public class UserController {
 
     @PostMapping("/resources/images")
     public BaseResponse<PatchImageRes> uploadUserImage(@RequestPart MultipartFile images){
+        logger.info("uploadUserImage : " + images.getName());
         try {
             long id = 1;
             //id = jwtService.getUserIdx();
@@ -52,6 +51,7 @@ public class UserController {
     @ResponseBody
     @GetMapping("/emails")
     public BaseResponse<BaseResponseStatus> checkAvailableEmail(@RequestParam(name = "email") String email){
+        logger.info("checkAvailableEmail : " + email);
         if(email == null){
             return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
         }
@@ -84,8 +84,9 @@ public class UserController {
     @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
     public BaseResponse<GetUserRes> getUser(@PathVariable("userIdx") int userIdx) {
         // Get Users
+        logger.info("getUser : " + userIdx);
         try{
-            GetUserRes getUserRes = userProvider.getUser(userIdx);
+            GetUserRes getUserRes = userProvider.getUserRes(userIdx);
             return new BaseResponse<>(getUserRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -102,6 +103,8 @@ public class UserController {
     @ResponseBody
     @PostMapping("")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
+        logger.info("createUser");
+
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
         if(postUserReq.getEmail() == null){
             return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
@@ -129,6 +132,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
+        logger.info("login");
         try{
             if(postLoginReq.getEmail() == null){
                 return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);

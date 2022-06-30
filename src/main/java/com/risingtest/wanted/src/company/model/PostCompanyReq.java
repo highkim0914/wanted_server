@@ -1,4 +1,4 @@
-package com.risingtest.wanted.src.company;
+package com.risingtest.wanted.src.company.model;
 
 import lombok.*;
 

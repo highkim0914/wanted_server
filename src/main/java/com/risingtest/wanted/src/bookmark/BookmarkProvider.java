@@ -11,10 +11,6 @@ public class BookmarkProvider {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
-    public boolean existsBookmarkByRecruitIdAndUserId(long recruitId, long userId){
-        return bookmarkRepository.findByRecruitIdAndUserId(recruitId, userId).isPresent();
-    }
-
     public List<Bookmark> findAllByUserId(long userId){
         List<Bookmark> list = bookmarkRepository.findAllByUserId(userId);
         return list;

@@ -1,10 +1,10 @@
 package com.risingtest.wanted.src.recruit.model;
 
-import com.risingtest.wanted.src.company.Company;
+import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.hashtag.CompanyHashtag;
-import com.risingtest.wanted.src.hashtag.Hashtag;
+import com.risingtest.wanted.src.hashtag.model.Hashtag;
 import com.risingtest.wanted.src.techstack.CompanyTechstack;
-import com.risingtest.wanted.src.techstack.Techstack;
+import com.risingtest.wanted.src.techstack.model.Techstack;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

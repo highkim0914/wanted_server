@@ -1,11 +1,10 @@
 package com.risingtest.wanted.src.recruit.model;
 
-import com.risingtest.wanted.src.company.Company;
+import com.risingtest.wanted.src.company.model.Company;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter

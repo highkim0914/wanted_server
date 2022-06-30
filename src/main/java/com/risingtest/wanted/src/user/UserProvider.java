@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.risingtest.wanted.config.BaseResponseStatus.*;
 
 //Provider : Read의 비즈니스 로직 처리
@@ -41,7 +39,7 @@ public class UserProvider {
         }
     }
 
-    public GetUserRes getUser(long id) throws BaseException {
+    public GetUserRes getUserRes(long id) throws BaseException {
         try {
             User user  = userRepository.findById(id)
                     .orElseThrow(()->new BaseException(USERS_EMPTY_USER_ID));
@@ -49,6 +47,13 @@ public class UserProvider {
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    public User findUserWithUserJwtToken() throws BaseException{
+        long userId = jwtService.getUserIdx();
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new BaseException(BaseResponseStatus.USERS_EMPTY_USER_ID));
+        return user;
     }
 
     public boolean isAlreadyRegisteredEmail(String email) throws BaseException{

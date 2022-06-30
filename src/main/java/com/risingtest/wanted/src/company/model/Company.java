@@ -1,8 +1,8 @@
-package com.risingtest.wanted.src.company;
+package com.risingtest.wanted.src.company.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
-import com.risingtest.wanted.src.follow.Follow;
+import com.risingtest.wanted.src.follow.model.Follow;
 import com.risingtest.wanted.src.hashtag.CompanyHashtag;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.techstack.CompanyTechstack;
@@ -46,6 +46,8 @@ public class Company extends BaseEntity {
     private String contactNumber;
 
     private String subscriptionPath;
+
+    private String profilePhotoUrl;
 
     private String photoUrl;
 

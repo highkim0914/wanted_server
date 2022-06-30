@@ -1,7 +1,6 @@
-package com.risingtest.wanted.src.recruit;
+package com.risingtest.wanted.src.recruit.model;
 
-import com.risingtest.wanted.src.company.Company;
-import com.risingtest.wanted.src.recruit.model.BasicRecruitRes;
+import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

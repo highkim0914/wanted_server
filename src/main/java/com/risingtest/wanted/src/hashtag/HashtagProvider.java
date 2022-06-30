@@ -1,5 +1,6 @@
 package com.risingtest.wanted.src.hashtag;
 
+import com.risingtest.wanted.src.hashtag.model.BasicHashtag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

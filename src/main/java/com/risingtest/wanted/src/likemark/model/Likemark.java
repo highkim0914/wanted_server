@@ -1,4 +1,4 @@
-package com.risingtest.wanted.src.likemark;
+package com.risingtest.wanted.src.likemark.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Entity
-public class LikeMark extends BaseEntity {
+public class Likemark extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

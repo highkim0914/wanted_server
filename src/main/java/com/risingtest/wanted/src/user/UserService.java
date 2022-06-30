@@ -39,6 +39,10 @@ public class UserService {
 
     @Value("${app.upload.dir}")
     private String uploadDir;
+
+    @Value("${app.upload.seperator}")
+    private String seperator;
+
     private final String USER_IMAGE_PREFIX = "user_image_";
     private final String USER_IMAGE_FOLDER = "users";
 
@@ -57,15 +61,15 @@ public class UserService {
     }
 
     public String saveUserImage(long userId, MultipartFile file) throws BaseException{
+
+        String originalFileName = file.getOriginalFilename();
+        logger.info("uploaded image original file name : "+ originalFileName);
+
+        String[] split = originalFileName.split("\\.");
+        if(split.length!=2) {
+            throw new BaseException(BaseResponseStatus.UPLOAD_IMAGE_INVALID_FILENAME);
+        }
         try {
-
-            String originalFileName = file.getOriginalFilename();
-            logger.info("uploaded image original file name : "+ originalFileName);
-
-            String[] split = originalFileName.split("\\.");
-            if(split.length!=2) {
-                throw new BaseException(BaseResponseStatus.UPLOAD_IMAGE_INVALID_FILENAME);
-            }
             String type = split[1];
 
             String saveFileImage = USER_IMAGE_PREFIX + userId + "." + type;
@@ -74,13 +78,13 @@ public class UserService {
 
             Path path = Paths.get(Arrays.stream(pathString)
                     .map(String::valueOf)
-                    .collect(Collectors.joining(File.separator,"","")));
+                    .collect(Collectors.joining(seperator,"","")));
 
             logger.info(path.toString());
 
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            StringJoiner joiner = new StringJoiner(File.separator,File.separator,"");
+            StringJoiner joiner = new StringJoiner(seperator,seperator,"");
             joiner.add("resources");
             joiner.add("images");
             joiner.add("users");

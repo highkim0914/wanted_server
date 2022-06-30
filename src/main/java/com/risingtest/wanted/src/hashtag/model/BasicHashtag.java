@@ -1,9 +1,8 @@
-package com.risingtest.wanted.src.hashtag;
+package com.risingtest.wanted.src.hashtag.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor

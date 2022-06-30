@@ -1,8 +1,8 @@
-package com.risingtest.wanted.src.follow;
+package com.risingtest.wanted.src.follow.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
-import com.risingtest.wanted.src.company.Company;
+import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

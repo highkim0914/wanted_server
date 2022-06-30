@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
 import com.risingtest.wanted.src.bookmark.Bookmark;
-import com.risingtest.wanted.src.company.Company;
-import com.risingtest.wanted.src.follow.Follow;
-import com.risingtest.wanted.src.likemark.LikeMark;
-import com.risingtest.wanted.src.resume.Resume;
+import com.risingtest.wanted.src.company.model.Company;
+import com.risingtest.wanted.src.follow.model.Follow;
+import com.risingtest.wanted.src.jobapplication.JobApplication;
+import com.risingtest.wanted.src.likemark.model.Likemark;
+import com.risingtest.wanted.src.resume.model.Resume;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,7 +42,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     @ToString.Exclude
-    private List<LikeMark> likeMarks;
+    private List<Likemark> likeMarks;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
@@ -52,5 +53,10 @@ public class User extends BaseEntity {
     @JsonManagedReference
     @ToString.Exclude
     private List<Resume> resumes;
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<JobApplication> jobApplications;
 
 }

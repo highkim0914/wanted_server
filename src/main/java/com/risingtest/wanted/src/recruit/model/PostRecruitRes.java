@@ -1,4 +1,4 @@
-package com.risingtest.wanted.src.recruit;
+package com.risingtest.wanted.src.recruit.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

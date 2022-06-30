@@ -2,7 +2,7 @@ package com.risingtest.wanted.src.language;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
-import com.risingtest.wanted.src.resume.Resume;
+import com.risingtest.wanted.src.resume.model.Resume;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.risingtest.wanted.src.company;
+package com.risingtest.wanted.src.company.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -35,6 +35,8 @@ public class BasicCompany {
 
     private String subscriptionPath;
 
+    private String profilePhotoUrl;
+
     private String photoUrl;
 
 
@@ -53,6 +55,7 @@ public class BasicCompany {
                 .email(company.getEmail())
                 .contactNumber(company.getContactNumber())
                 .subscriptionPath(company.getSubscriptionPath())
+                .profilePhotoUrl(company.getProfilePhotoUrl())
                 .photoUrl(company.getPhotoUrl())
                 .build();
     }

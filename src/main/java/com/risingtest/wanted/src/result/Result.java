@@ -3,7 +3,6 @@ package com.risingtest.wanted.src.result;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
 import com.risingtest.wanted.src.career.Career;
-import com.risingtest.wanted.src.resume.Resume;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -5,44 +5,115 @@ import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.src.bookmark.BasicBookmark;
 import com.risingtest.wanted.src.bookmark.Bookmark;
 import com.risingtest.wanted.src.bookmark.BookmarkService;
+import com.risingtest.wanted.src.jobapplication.*;
+import com.risingtest.wanted.src.likemark.model.BasicLikemark;
+import com.risingtest.wanted.src.likemark.model.Likemark;
+import com.risingtest.wanted.src.likemark.LikemarkService;
 import com.risingtest.wanted.src.recruit.model.Recruit;
-import com.risingtest.wanted.src.user.UserRepository;
+import com.risingtest.wanted.src.resume.ResumeController;
+import com.risingtest.wanted.src.resume.ResumeProvider;
+import com.risingtest.wanted.src.resume.model.BasicResume;
+import com.risingtest.wanted.src.resume.model.Resume;
+import com.risingtest.wanted.src.user.UserProvider;
 import com.risingtest.wanted.src.user.model.User;
 import com.risingtest.wanted.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecruitService {
 
+    @Autowired
     private RecruitRepository recruitRepository;
 
+    @Autowired
     private JwtService jwtService;
 
-    private UserRepository userRepository;
+    @Autowired
+    private UserProvider userProvider;
 
+    @Autowired
     private BookmarkService bookmarkService;
 
     @Autowired
-    public RecruitService(RecruitRepository recruitRepository, JwtService jwtService, UserRepository userRepository, BookmarkService bookmarkService) {
-        this.recruitRepository = recruitRepository;
-        this.jwtService = jwtService;
-        this.userRepository = userRepository;
-        this.bookmarkService = bookmarkService;
-    }
+    private LikemarkService likemarkService;
+
+    @Autowired
+    private RecruitProvider recruitProvider;
+    @Autowired
+    private ResumeProvider resumeProvider;
+
+    @Autowired
+    private JobApplicationService jobApplicationService;
 
     @Transactional
     public BasicBookmark toggleBookmark(long recruitId) throws BaseException{
-        Recruit recruit = recruitRepository.findById(recruitId)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.GET_RECRUIT_NO_RECRUIT));
-        long userId = jwtService.getUserIdx();
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.USERS_EMPTY_USER_ID));
+        Recruit recruit = checkRecruitId(recruitId);
+        User user = userProvider.findUserWithUserJwtToken();
 
         Bookmark bookmark = bookmarkService.toggleBookmark(recruit,user);
         return BasicBookmark.from(bookmark);
 
+    }
+
+    @Transactional
+    public BasicLikemark toggleLikemark(long recruitId) {
+        Recruit recruit = checkRecruitId(recruitId);
+        User user = userProvider.findUserWithUserJwtToken();
+
+
+        Likemark likemark = likemarkService.toggleLikemark(recruit,user);
+        return BasicLikemark.from(likemark);
+    }
+
+    public Recruit checkRecruitId(long recruitId) throws BaseException{
+        Recruit recruit = recruitRepository.findById(recruitId)
+                .orElseThrow(()->new BaseException(BaseResponseStatus.GET_RECRUIT_NO_RECRUIT));
+        return recruit;
+    }
+
+
+    public JobApplicationFormReq getJobApplicationReq() throws BaseException{
+        User user = userProvider.findUserWithUserJwtToken();
+        try {
+            List<Resume> resumes = user.getResumes();
+            List<BasicResume> basicResumes = resumes.stream()
+                    .map(BasicResume::from)
+                    .collect(Collectors.toList());
+            JobApplicationFormReq jobApplicationFormReq = JobApplicationFormReq.builder()
+                    .name(user.getUserName())
+                    .email(user.getEmail())
+                    .phoneNumber("")
+                    .recommender("")
+                    .basicResumes(basicResumes)
+                    .build();
+            return jobApplicationFormReq;
+        }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    @Transactional
+    public void createJobApplyWithRecruitId(PostJobApplicationReq postJobApplicationReq, long id) throws BaseException{
+        try {
+            Recruit recruit = recruitProvider.getRecruitById(id);
+            Resume resume = resumeProvider.findById(postJobApplicationReq.getResumeId());
+            User user = userProvider.findUserWithUserJwtToken();
+            if(!resume.getUser().equals(user)){
+                throw new BaseException(BaseResponseStatus.RESUME_NOT_OWNED_BY_USER);
+            }
+            JobApplication jobApplication = jobApplicationService.createJobApplication(postJobApplicationReq,user,resume,recruit);
+        }
+        catch (BaseException e){
+            throw e;
+        }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
     }
 }

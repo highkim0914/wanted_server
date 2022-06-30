@@ -6,11 +6,11 @@ server:
 #      min-spare: 10
 #      max: 20
 #
-#logging:
-#  level:
+logging:
+  level:
 #    com.zaxxer.hikari.HikariConfig: DEBUG
 #    com.zaxxer.hikari: TRACE
-#    com.risingtest.wanted.src.user: INFO
+    com.risingtest.wanted: INFO
 
 spring:
   devtools:
@@ -26,9 +26,9 @@ spring:
     password: root
 #    driver-class-name: org.mysql.jdbc.Driver
     hikari:
-      idle-timeout: 28799970
+      idle-timeout: 28799000
+      max-lifetime: 28799000
       leak-detection-threshold: 2000
-      max-lifetime: 28799970
   jpa:
     show-sql: true
     properties:
@@ -48,3 +48,4 @@ app:
   upload:
     #dir : /home/ubuntu/images/users
     dir : C://wanted//images
+    seperator : //

@@ -3,7 +3,8 @@ package com.risingtest.wanted.src.jobapplication;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
 import com.risingtest.wanted.src.recruit.model.Recruit;
-import com.risingtest.wanted.src.resume.Resume;
+import com.risingtest.wanted.src.resume.model.Resume;
+import com.risingtest.wanted.src.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,10 @@ public class JobApplication extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String name;
+
+    private String email;
+
     private String phoneNumber;
 
     private String recommender;
@@ -36,7 +41,14 @@ public class JobApplication extends BaseEntity {
     private Resume resume;
 
     @ManyToOne
+    @JoinColumn(name = "user_id",nullable = false,updatable = false)
+    @JsonBackReference
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "recruit_id",nullable = false,updatable = false)
     @JsonBackReference
     private Recruit recruit;
+
+
 }

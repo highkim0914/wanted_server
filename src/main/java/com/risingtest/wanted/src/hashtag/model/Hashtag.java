@@ -1,7 +1,8 @@
-package com.risingtest.wanted.src.hashtag;
+package com.risingtest.wanted.src.hashtag.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
+import com.risingtest.wanted.src.hashtag.CompanyHashtag;
 import lombok.*;
 
 import javax.persistence.*;

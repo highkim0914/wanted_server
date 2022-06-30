@@ -21,7 +21,7 @@ public enum BaseResponseStatus {
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
-
+    REQUEST_METHOD_ERROR(false,2004,"요청 메소드가 잘못되었습니다."),
     SMS_INVALID_PHONE_NUMBER(false, 2005, "전화번호 형식을 확인해주세요."),
 
     // users
@@ -36,6 +36,7 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_JWT(false, 2020, "유효하지 않은 전화번호 토큰입니다."),
     INVALID_EMPLOYEE_NUMBER(false, 2021, "적절한 직원수 입력이 아닙니다. (10인 이상 필수)"),
     INVALID_ESTABLISHMENT_YEAR(false,2022,"적절한 설립년도가 아닙니다."),
+    INVALID_REGISTRATION_NUMBER(false,2023,"적절한 사업자번호가 아닙니다."),
 
     LOGIN_USER_NO_EMAIL(false,2030,"존재하지 않는 이메일입니다."),
 
@@ -45,6 +46,10 @@ public enum BaseResponseStatus {
     POST_BOOKMARK_EXISTS(false,2070,"이미 북마크되어 있는 채용공고입니다."),
     NO_BOOKMARK(false,2071,"북마크되지 않은 채용공고입니다."),
     NO_COMPANY(false,2080,"존재하지 않는 회사입니다."),
+    NO_LIKE_MARK(false,2090,"존재하지 않는 좋아요입니다."),
+    NO_RESUME(false,2100,"존재하지 않는 이력서입니다."),
+    RESUME_NOT_OWNED_BY_USER(false,2101, "현재 유저의 이력서가 아닙니다."),
+    NO_FOLLOW(false,2110,"존재하지 않는 팔로잉입니다."),
 
     UPLOAD_IMAGE_FAIL(false,2500,"이미지 업로드 오류입니다."),
     UPLOAD_IMAGE_INVALID_FILENAME(false,2501,"이미지 파일 이름을 확인해주세요."),

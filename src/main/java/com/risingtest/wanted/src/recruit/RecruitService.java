@@ -55,19 +55,29 @@ public class RecruitService {
         Recruit recruit = checkRecruitId(recruitId);
         User user = userProvider.findUserWithUserJwtToken();
 
-        Bookmark bookmark = bookmarkService.toggleBookmark(recruit,user);
-        return BasicBookmark.from(bookmark);
-
+        try {
+            Bookmark bookmark = bookmarkService.toggleBookmark(recruit,user);
+            return BasicBookmark.from(bookmark);
+        }
+        catch (Exception e){
+            Bookmark bookmark = bookmarkService.retoggleBookmark(recruit,user);
+            return BasicBookmark.from(bookmark);
+        }
     }
 
-    @Transactional
+
     public BasicLikemark toggleLikemark(long recruitId) {
         Recruit recruit = checkRecruitId(recruitId);
         User user = userProvider.findUserWithUserJwtToken();
 
-
-        Likemark likemark = likemarkService.toggleLikemark(recruit,user);
-        return BasicLikemark.from(likemark);
+        try {
+            Likemark likemark = likemarkService.toggleLikemark(recruit,user);
+            return BasicLikemark.from(likemark);
+        }
+        catch (Exception e){
+            Likemark likemark = likemarkService.retoggleLikemark(recruit,user);
+            return BasicLikemark.from(likemark);
+        }
     }
 
     public Recruit checkRecruitId(long recruitId) throws BaseException{

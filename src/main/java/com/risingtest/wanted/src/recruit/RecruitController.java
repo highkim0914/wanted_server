@@ -58,7 +58,7 @@ public class RecruitController {
                                                              @RequestParam(name = "hashtags", defaultValue = "") List<Long> hashtags,
                                                              @RequestParam(name = "techstacks", defaultValue = "") List<Long> techstacks
     ){
-        logger.info("채용 공고 필터 조회");
+        logger.info("getRecruitsWithFilter : " + jobGroup + " " + years + " " + positions + " " + locations + " " + hashtags + " " + techstacks);
         if(years.size()>2){
             return new BaseResponse<>(BaseResponseStatus.GET_RECRUIT_TOO_MANY_YEARS);
         }
@@ -68,7 +68,7 @@ public class RecruitController {
 
     @GetMapping("/{id}/application")
     public BaseResponse<JobApplicationFormReq> requestJobApplyForm(@PathVariable long id){
-        logger.info("지원서 기본 양식 보여주는 칸 조회");
+        logger.info("requestJobApplyForm : " + id);
         try {
             JobApplicationFormReq jobApplicationFormReq = recruitService.getJobApplicationReq();
             return new BaseResponse<>(jobApplicationFormReq);
@@ -80,7 +80,7 @@ public class RecruitController {
 
     @PostMapping("/{id}/application")
     public BaseResponse<BaseResponseStatus> createJobApplyWithRecruitId(@PathVariable long id, @RequestBody PostJobApplicationReq postJobApplicationReq){
-        logger.info("지원하기 버튼 통해 지원 생성");
+        logger.info("createJobApplyWithRecruitId : " + id + " " + postJobApplicationReq);
         if(!ValidationRegex.isRegexPhoneNumber(postJobApplicationReq.getPhoneNumber())){
             return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
         }
@@ -95,7 +95,7 @@ public class RecruitController {
 
     @GetMapping("/{id}")
     public BaseResponse<GetRecruitRes> getRecruitById(@PathVariable long id){
-        logger.info("채용 공고 상세 조회");
+        logger.info("getRecruitById : " + id);
         try {
             Recruit recruit = recruitProvider.getRecruitById(id);
             Company company = recruit.getCompany();
@@ -108,7 +108,7 @@ public class RecruitController {
 
     @PostMapping("/{recruitId}/bookmarks")
     public BaseResponse<BasicBookmark> toggleBookmark(@PathVariable long recruitId){
-        logger.info("북마크 생성/해제");
+        logger.info("toggleBookmark : " + recruitId);
         try {
             BasicBookmark basicBookmark = recruitService.toggleBookmark(recruitId);
             return new BaseResponse<>(basicBookmark);
@@ -120,7 +120,7 @@ public class RecruitController {
 
     @PostMapping("/{recruitId}/likemarks")
     public BaseResponse<BasicLikemark> toggleLikemark(@PathVariable long recruitId){
-        logger.info("좋아요 생성/해제");
+        logger.info("toggleLikemark : " + recruitId);
         try {
             BasicLikemark basicLikeMark = recruitService.toggleLikemark(recruitId);
             return new BaseResponse<>(basicLikeMark);

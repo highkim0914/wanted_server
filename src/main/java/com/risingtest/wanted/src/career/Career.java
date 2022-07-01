@@ -26,6 +26,9 @@ public class Career extends BaseEntity {
 
     private LocalDate endDate;
 
+    @Enumerated(EnumType.STRING)
+    private TenureType tenure;
+
     private Boolean isInService;
 
     private String companyName;

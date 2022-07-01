@@ -1,14 +1,19 @@
 package com.risingtest.wanted.src.resume.model;
 
 import com.risingtest.wanted.src.award.Award;
+import com.risingtest.wanted.src.award.BasicAward;
+import com.risingtest.wanted.src.career.BasicCareer;
 import com.risingtest.wanted.src.career.Career;
+import com.risingtest.wanted.src.education.BasicEducation;
 import com.risingtest.wanted.src.education.Education;
 import com.risingtest.wanted.src.jobapplication.JobApplication;
+import com.risingtest.wanted.src.language.BasicLanguageSkill;
 import com.risingtest.wanted.src.language.LanguageSkill;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -30,13 +35,13 @@ public class ResumeDto {
 
     private String externalLink;
 
-    private List<Career> careers;
+    private List<BasicCareer> careers;
 
-    private List<Award> awards;
+    private List<BasicAward> awards;
 
-    private List<Education> educations;
+    private List<BasicEducation> educations;
 
-    private List<LanguageSkill> languageSkills;
+    private List<BasicLanguageSkill> languageSkills;
 
     private List<JobApplication> jobApplications;
 
@@ -49,10 +54,22 @@ public class ResumeDto {
                 .phoneNumber(resume.getPhoneNumber())
                 .introduction(resume.getIntroduction())
                 .externalLink(resume.getExternalLink())
-                .careers(resume.getCareers())
-                .awards(resume.getAwards())
-                .educations(resume.getEducations())
-                .languageSkills(resume.getLanguageSkills())
+                .careers(resume.getCareers()
+                        .stream()
+                        .map(BasicCareer::from)
+                        .collect(Collectors.toList()))
+                .awards(resume.getAwards()
+                        .stream()
+                        .map(BasicAward::from)
+                        .collect(Collectors.toList()))
+                .educations(resume.getEducations()
+                        .stream()
+                        .map(BasicEducation::from)
+                        .collect(Collectors.toList()))
+                .languageSkills(resume.getLanguageSkills()
+                        .stream()
+                        .map(BasicLanguageSkill::from)
+                        .collect(Collectors.toList()))
                 .jobApplications(resume.getJobApplications())
                 .build();
     }

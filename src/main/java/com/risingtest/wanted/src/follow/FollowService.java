@@ -8,6 +8,7 @@ import com.risingtest.wanted.src.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -18,29 +19,31 @@ public class FollowService {
     @Autowired
     FollowProvider followProvider;
 
-    public Follow toggleFollow(Company company, User user) throws BaseException {
-        Optional<Follow> optionalFollow = followRepository.findByCompanyIdAndUserId(company.getId(),user.getId());
-        if (optionalFollow.isPresent()){
-            try {
-                Follow follow = optionalFollow.get();
-                follow.setStatus((follow.getStatus() + 1) % 2);
-                followRepository.save(follow);
-                return follow;
-            } catch (Exception e) {
-                throw new BaseException(BaseResponseStatus.NO_FOLLOW);
-            }
+    @Transactional
+    public Follow toggleFollow(Company company, User user) throws Exception {
+        Follow optionalFollow = followRepository.findByCompanyIdAndUserId(company.getId(),user.getId())
+                .orElseGet(()->{
+                    Follow follow = Follow.builder()
+                            .company(company)
+                            .user(user)
+                            .build();
+                    follow.setStatus(1);
+                    return follow;
+                });
+        optionalFollow.setStatus((optionalFollow.getStatus()+1)%2);
+        return followRepository.save(optionalFollow);
+    }
+
+    public Follow retoggleFollow(Company company, User user) throws BaseException{
+        try {
+            Follow optionalFollow = followRepository.findByCompanyIdAndUserId(company.getId(),user.getId())
+                    .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_FOLLOW));
+
+            optionalFollow.setStatus((optionalFollow.getStatus()+1)%2);
+            return followRepository.save(optionalFollow);
         }
-        else{
-            try {
-                Follow follow = Follow.builder()
-                        .company(company)
-                        .user(user)
-                        .build();
-                return followRepository.save(follow);
-            }
-            catch (Exception e){
-                throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-            }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
 }

@@ -5,8 +5,11 @@ import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.LockModeType;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -18,30 +21,32 @@ public class BookmarkService {
     @Autowired
     private BookmarkProvider bookmarkProvider;
 
-    public Bookmark toggleBookmark(Recruit recruit, User user) throws BaseException {
-        Optional<Bookmark> optionalBookmark = bookmarkRepository.findByRecruitIdAndUserId(recruit.getId(), user.getId());
-        if (optionalBookmark.isPresent()){
-            try {
-                Bookmark bookmark = optionalBookmark.get();
-                bookmark.setStatus((bookmark.getStatus() + 1) % 2);
-                bookmarkRepository.save(bookmark);
-                return bookmark;
-            } catch (Exception e) {
-                throw new BaseException(BaseResponseStatus.NO_BOOKMARK);
-            }
+    @Transactional
+    public Bookmark toggleBookmark(Recruit recruit, User user) throws Exception {
+        Bookmark optionalBookmark = bookmarkRepository.findByRecruitIdAndUserId(recruit.getId(), user.getId())
+                .orElseGet(()->{
+                    Bookmark bookmark = Bookmark.builder()
+                            .recruit(recruit)
+                            .user(user)
+                            .build();
+                    bookmark.setStatus(1);
+                    return bookmark;
+                });
+        optionalBookmark.setStatus((optionalBookmark.getStatus() + 1) % 2);
+        return bookmarkRepository.save(optionalBookmark);
+    }
+
+    @Transactional
+    public Bookmark retoggleBookmark(Recruit recruit, User user) throws BaseException{
+        try {
+            Bookmark optionalBookmark = bookmarkRepository.findByRecruitIdAndUserId(recruit.getId(), user.getId())
+                    .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_BOOKMARK));
+
+            optionalBookmark.setStatus((optionalBookmark.getStatus() + 1) % 2);
+            return bookmarkRepository.save(optionalBookmark);
         }
-        else{
-            try {
-                Bookmark bookmark = Bookmark.builder()
-                        .recruit(recruit)
-                        .user(user)
-                        .build();
-                return bookmarkRepository.save(bookmark);
-            }
-            catch (Exception e){
-                throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-            }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
-        // 없
     }
 }

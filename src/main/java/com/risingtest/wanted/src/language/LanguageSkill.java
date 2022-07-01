@@ -1,15 +1,14 @@
 package com.risingtest.wanted.src.language;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
 import com.risingtest.wanted.src.resume.model.Resume;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,10 +23,16 @@ public class LanguageSkill extends BaseEntity {
 
     private String title;
 
-    private String level;
+    private LanguageLevel level;
 
     @ManyToOne
     @JoinColumn(name = "resume_id",nullable = false,updatable = false)
     @JsonBackReference
     private Resume resume;
+
+    @OneToMany(mappedBy = "languageSkill")
+    @JsonManagedReference
+    @ToString.Exclude
+    @Builder.Default
+    private List<LanguageCertificate> languageCertificates = new ArrayList<>();
 }

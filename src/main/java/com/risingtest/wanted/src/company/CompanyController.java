@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/companies")
@@ -34,7 +35,7 @@ public class CompanyController {
 
     @PostMapping()
     public BaseResponse<BasicCompany> createCompany(@RequestBody PostCompanyReq postCompanyReq){
-        logger.info("회사 생성");
+        logger.info("createCompany: {}", postCompanyReq);
         if(!ValidationRegex.isRegexContactNumber(postCompanyReq.getContactNumber())){
             return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
         }
@@ -63,7 +64,7 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public BaseResponse<GetCompanyRes> getCompany(@PathVariable long id){
-        logger.info("회사 조회");
+        logger.info("getCompany: {}", id);
         try {
             Company company = companyProvider.findById(id);
             return new BaseResponse<>(GetCompanyRes.from(company));
@@ -75,7 +76,7 @@ public class CompanyController {
 
     @PostMapping("/recruits")
     public BaseResponse<PostRecruitRes> createRecruit(@RequestBody PostRecruitReq postRecruitReq){
-        logger.info("회사 채용공고 생성");
+        logger.info("createRecruit: {}", postRecruitReq);
         try {
             Company company = companyProvider.findById(postRecruitReq.getCompanyId());
             Recruit recruit = companyService.createRecruit(postRecruitReq, company);
@@ -88,7 +89,7 @@ public class CompanyController {
 
     @PostMapping("/photos")
     public BaseResponse<String> uploadCompanyImages(@RequestPart List<MultipartFile> images){
-        logger.info("회사 공개용 이미지 업로드");
+        logger.info("uploadCompanyImages: {}", images.stream().map(MultipartFile::getName).collect(Collectors.toList()));
         try {
             long id = 1;
             //id = jwtService.getUserIdx();
@@ -102,7 +103,7 @@ public class CompanyController {
 
     @PostMapping("/profile-photos")
     public BaseResponse<String> uploadCompanyProfileImages(@RequestPart MultipartFile image){
-        logger.info("회사 프로필 이미지 업로드");
+        logger.info("uploadCompanyProfileImages: {}", image.getName());
         try {
             long id = 1;
             //id = jwtService.getUserIdx();
@@ -116,7 +117,7 @@ public class CompanyController {
 
     @PostMapping("/{companyId}/follows")
     public BaseResponse<BasicFollow> toggleFollow(@PathVariable long companyId){
-        logger.info("팔로우 생성/해제");
+        logger.info("toggleFollow: {}", companyId);
         try {
             BasicFollow basicFollow = companyService.toggleFollow(companyId);
             return new BaseResponse<>(basicFollow);

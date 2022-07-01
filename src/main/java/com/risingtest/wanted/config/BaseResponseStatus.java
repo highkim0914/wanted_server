@@ -49,7 +49,9 @@ public enum BaseResponseStatus {
     NO_LIKE_MARK(false,2090,"존재하지 않는 좋아요입니다."),
     NO_RESUME(false,2100,"존재하지 않는 이력서입니다."),
     RESUME_NOT_OWNED_BY_USER(false,2101, "현재 유저의 이력서가 아닙니다."),
+    INVALID_INTRODUCTION(false,2102,"최종 저장 시 이력서는 400자 이상이어야 합니다."),
     NO_FOLLOW(false,2110,"존재하지 않는 팔로잉입니다."),
+    NO_LIKE(false,2120,"존재하지 않는 좋아요입니다."),
 
     UPLOAD_IMAGE_FAIL(false,2500,"이미지 업로드 오류입니다."),
     UPLOAD_IMAGE_INVALID_FILENAME(false,2501,"이미지 파일 이름을 확인해주세요."),

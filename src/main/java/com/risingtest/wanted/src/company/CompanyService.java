@@ -139,8 +139,14 @@ public class CompanyService {
         Company company = checkCompanyId(companyId);
         User user = userProvider.findUserWithUserJwtToken();
 
-        Follow follow = followService.toggleFollow(company,user);
-        return BasicFollow.from(follow);
+        try {
+            Follow follow = followService.toggleFollow(company,user);
+            return BasicFollow.from(follow);
+        }
+        catch (Exception e){
+            Follow follow = followService.retoggleFollow(company,user);
+            return BasicFollow.from(follow);
+        }
     }
 
     private Company checkCompanyId(long companyId) throws BaseException{

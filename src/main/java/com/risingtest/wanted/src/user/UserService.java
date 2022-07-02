@@ -4,6 +4,7 @@ package com.risingtest.wanted.src.user;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
+import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.user.model.PostUserReq;
 import com.risingtest.wanted.src.user.model.PostUserRes;
 import com.risingtest.wanted.src.user.model.User;
@@ -164,5 +165,11 @@ public class UserService {
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    public void setCompany(Company company) {
+        User user = userProvider.findUserWithUserJwtToken();
+        user.setCompany(company);
+        user = userRepository.save(user);
     }
 }

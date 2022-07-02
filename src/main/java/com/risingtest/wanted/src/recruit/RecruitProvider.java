@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,10 +39,11 @@ public class RecruitProvider {
         return list;
     }
 
+    @Transactional
     public Recruit getRecruitById(long id) throws BaseException {
-
         Recruit recruit = recruitRepository.findById(id)
                 .orElseThrow(()->new BaseException(BaseResponseStatus.GET_RECRUIT_NO_RECRUIT));
+        recruit.setViews(recruit.getViews()+1);
         return recruit;
     }
 }

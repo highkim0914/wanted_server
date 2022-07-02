@@ -1,8 +1,10 @@
 package com.risingtest.wanted.src.language;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.src.resume.model.Resume;
+import com.risingtest.wanted.src.resume.model.ResumeDto;
 import lombok.*;
 
 import javax.persistence.JoinColumn;

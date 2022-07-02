@@ -1,7 +1,6 @@
 package com.risingtest.wanted.src.recruit.model;
 
 import com.risingtest.wanted.src.company.model.Company;
-import com.risingtest.wanted.src.recruit.model.Recruit;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -23,7 +21,7 @@ public class PostRecruitReq  {
 
     private String detail;
 
-    private String job_group;
+    private String jobGroup;
 
     private String position;
 
@@ -31,27 +29,23 @@ public class PostRecruitReq  {
 
     private String title;
 
-    private String location;
-
     private LocalDate deadline;
-
-    private long views;
 
     public Recruit toEntity(Company company){
         return Recruit.builder()
                 .title(this.getTitle())
                 .company(company)
                 .detail(this.getDetail())
-                .location(this.getLocation())
+                .location(company.getLocation())
                 .deadline(this.getDeadline())
-                .job_group(this.getJob_group())
+                .jobGroup(this.getJobGroup())
                 .career(this.getCareer())
                 .position(this.getPosition())
-                .response_rate(0.8)
+                .responseRate(company.getResponseRate())
                 .views(0L)
-                .bookmarks(new ArrayList<>())
-                .jobApplications(new ArrayList<>())
-                .likeMarks(new ArrayList<>())
+//                .bookmarks(new ArrayList<>())
+//                .jobApplications(new ArrayList<>())
+//                .likeMarks(new ArrayList<>())
                 .build();
     }
 }

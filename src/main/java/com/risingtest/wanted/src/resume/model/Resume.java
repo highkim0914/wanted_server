@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
 import com.risingtest.wanted.src.award.Award;
+import com.risingtest.wanted.src.career.BasicCareer;
 import com.risingtest.wanted.src.career.Career;
 import com.risingtest.wanted.src.education.Education;
 import com.risingtest.wanted.src.jobapplication.JobApplication;
@@ -74,4 +75,5 @@ public class Resume extends BaseEntity {
     @ToString.Exclude
     @Builder.Default
     private List<JobApplication> jobApplications = new ArrayList<>();
+
 }

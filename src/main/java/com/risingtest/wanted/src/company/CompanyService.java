@@ -11,6 +11,7 @@ import com.risingtest.wanted.src.recruit.model.PostRecruitReq;
 import com.risingtest.wanted.src.recruit.RecruitRepository;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.user.UserProvider;
+import com.risingtest.wanted.src.user.UserService;
 import com.risingtest.wanted.src.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,9 @@ public class CompanyService {
     @Autowired
     private FollowService followService;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${app.upload.dir}")
     private String uploadDir;
 
@@ -51,21 +55,15 @@ public class CompanyService {
     private final String COMPANY_IMAGE_PREFIX = "company_image_";
     private final String COMPANY_IMAGE_FOLDER = "companies";
 
+    @Transactional
     public Company createCompany(PostCompanyReq postCompanyReq) throws BaseException {
         try {
             Company company = companyRepository.save(postCompanyReq.toEntity());
+            userService.setCompany(company);
             return company;
         }
-        catch (Exception e){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-        }
-    }
-
-    public Recruit createRecruit(PostRecruitReq postRecruitReq, Company company) {
-        try {
-            Recruit recruit = postRecruitReq.toEntity(company);
-            recruitRepository.save(recruit);
-            return recruit;
+        catch (BaseException e){
+            throw e;
         }
         catch (Exception e){
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
@@ -78,16 +76,13 @@ public class CompanyService {
 
         StringJoiner resultJoiner = new StringJoiner(",");
         int count = 1;
-        try {
-            for(MultipartFile file : images){
-                //logger.info("uploaded image original file name : "+ originalFileName);
-                resultJoiner.add(uploadFile(file,id,count));
-                count++;
-            }
+
+        for(MultipartFile file : images){
+            //logger.info("uploaded image original file name : "+ originalFileName);
+            resultJoiner.add(uploadFile(file,id,count));
+            count++;
         }
-        catch (BaseException e){
-            throw e;
-        }
+
         String photoUrl = resultJoiner.toString();
         company.setPhotoUrl(photoUrl);
         return photoUrl;
@@ -152,6 +147,25 @@ public class CompanyService {
     private Company checkCompanyId(long companyId) throws BaseException{
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_COMPANY));
+        return company;
+    }
+
+    public Company updateCompany(PostCompanyReq postCompanyReq) {
+        User user = userProvider.findUserWithUserJwtToken();
+        Company company = user.getCompany();
+        company.setAddress(postCompanyReq.getAddress());
+        company.setName(postCompanyReq.getName());
+        company.setLocation(postCompanyReq.getLocation());
+        company.setRegistrationNumber(postCompanyReq.getRegistrationNumber());
+        company.setSalesAmount(postCompanyReq.getSalesAmount());
+        company.setIndustry(postCompanyReq.getIndustry());
+        company.setEmail(postCompanyReq.getEmail());
+        company.setEmployeesNumber(postCompanyReq.getEmployeesNumber());
+        company.setEstablishmentYear(postCompanyReq.getEstablishmentYear());
+        company.setContactNumber(postCompanyReq.getContactNumber());
+        company.setSubscriptionPath(postCompanyReq.getSubscriptionPath());
+
+        company = companyRepository.save(company);
         return company;
     }
 }

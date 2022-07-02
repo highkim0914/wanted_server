@@ -28,15 +28,17 @@ public class Recruit extends BaseEntity {
 
     private String detail;
 
-    private double response_rate;
+    private double responseRate;
 
-    private String job_group;
+    private String jobGroup;
 
     private String position;
 
     private int career;
 
     private String location;
+
+//    private String address;
 
     private LocalDate deadline;
 

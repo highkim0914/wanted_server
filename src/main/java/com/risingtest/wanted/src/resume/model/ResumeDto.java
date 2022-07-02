@@ -1,11 +1,13 @@
 package com.risingtest.wanted.src.resume.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.src.award.Award;
 import com.risingtest.wanted.src.award.BasicAward;
 import com.risingtest.wanted.src.career.BasicCareer;
 import com.risingtest.wanted.src.career.Career;
 import com.risingtest.wanted.src.education.BasicEducation;
 import com.risingtest.wanted.src.education.Education;
+import com.risingtest.wanted.src.jobapplication.BasicJobApplication;
 import com.risingtest.wanted.src.jobapplication.JobApplication;
 import com.risingtest.wanted.src.language.BasicLanguageSkill;
 import com.risingtest.wanted.src.language.LanguageSkill;
@@ -43,7 +45,7 @@ public class ResumeDto {
 
     private List<BasicLanguageSkill> languageSkills;
 
-    private List<JobApplication> jobApplications;
+    private List<BasicJobApplication> jobApplications;
 
     public static ResumeDto from(Resume resume) {
         return ResumeDto.builder()
@@ -70,7 +72,10 @@ public class ResumeDto {
                         .stream()
                         .map(BasicLanguageSkill::from)
                         .collect(Collectors.toList()))
-                .jobApplications(resume.getJobApplications())
+                .jobApplications(resume.getJobApplications()
+                        .stream()
+                        .map(BasicJobApplication::from)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

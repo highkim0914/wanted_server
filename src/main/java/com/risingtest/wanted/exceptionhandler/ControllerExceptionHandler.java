@@ -4,6 +4,7 @@ import com.risingtest.wanted.config.BaseResponse;
 import com.risingtest.wanted.config.BaseResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,5 +26,11 @@ public class ControllerExceptionHandler {
 
         logger.info(e.getMethod());
         return new BaseResponse<>(BaseResponseStatus.REQUEST_METHOD_ERROR);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public BaseResponse<BaseResponseStatus> baseExceptionHandler(HttpMediaTypeNotSupportedException e){
+        logger.info(String.valueOf(e.getContentType()));
+        return new BaseResponse<>(BaseResponseStatus.REQUEST_MEDIA_TYPE_ERROR);
     }
 }

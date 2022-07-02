@@ -8,6 +8,7 @@ import com.risingtest.wanted.src.resume.model.Resume;
 import com.risingtest.wanted.src.resume.model.ResumeDto;
 import com.risingtest.wanted.utils.ValidationRegex;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,14 +67,18 @@ public class ResumeController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{resumeId}")
     public BaseResponse<BaseResponseStatus> updateResume(@RequestBody ResumeDto resumeDto,
+                                                         @PathVariable long resumeId,
                                                          @RequestParam(value = "permanent", defaultValue = "false") boolean isPermanent){
         if(resumeDto.getIntroduction().length()<400 && isPermanent){
             return new BaseResponse<>(BaseResponseStatus.INVALID_INTRODUCTION);
         }
-        if(ValidationRegex.isRegexPhoneNumberWithoutCrosshatch(resumeDto.getPhoneNumber())){
+        if(!ValidationRegex.isRegexPhoneNumber(resumeDto.getPhoneNumber())){
             return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
+        }
+        if(resumeDto.getId()!=resumeId){
+            return new BaseResponse<>(BaseResponseStatus.REQUEST_ERROR);
         }
         try {
 

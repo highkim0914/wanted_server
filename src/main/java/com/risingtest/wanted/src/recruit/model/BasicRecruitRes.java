@@ -26,9 +26,9 @@ public class BasicRecruitRes {
 
     //private List<Long> hashtags;
 
-    private double response_rate;
+    private double responseRate;
 
-    private String job_group;
+    private String jobGroup;
 
     private String position;
 
@@ -57,8 +57,8 @@ public class BasicRecruitRes {
                 .companyName(companyName)
                 .address(company.getAddress())
                 .detail(recruit.getDetail())
-                .response_rate(recruit.getResponse_rate())
-                .job_group(recruit.getJob_group())
+                .responseRate(recruit.getResponseRate())
+                .jobGroup(recruit.getJobGroup())
                 .position(recruit.getPosition())
                 .career(recruit.getCareer())
                 .location(recruit.getLocation())

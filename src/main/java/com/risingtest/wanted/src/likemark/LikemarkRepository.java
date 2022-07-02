@@ -17,4 +17,6 @@ public interface LikemarkRepository extends JpaRepository<Likemark,Long> {
     Optional<Likemark> findByRecruitIdAndUserId(long recruitId, long userId);
 
     List<Likemark> findAllByIdAndStatus(long id, int status);
+
+    List<Likemark> findAllByUserId(long userId);
 }

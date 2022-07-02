@@ -5,12 +5,13 @@ import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.src.bookmark.BasicBookmark;
 import com.risingtest.wanted.src.bookmark.Bookmark;
 import com.risingtest.wanted.src.bookmark.BookmarkService;
+import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.jobapplication.*;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;
 import com.risingtest.wanted.src.likemark.model.Likemark;
 import com.risingtest.wanted.src.likemark.LikemarkService;
+import com.risingtest.wanted.src.recruit.model.PostRecruitReq;
 import com.risingtest.wanted.src.recruit.model.Recruit;
-import com.risingtest.wanted.src.resume.ResumeController;
 import com.risingtest.wanted.src.resume.ResumeProvider;
 import com.risingtest.wanted.src.resume.model.BasicResume;
 import com.risingtest.wanted.src.resume.model.Resume;
@@ -121,6 +122,37 @@ public class RecruitService {
         }
         catch (BaseException e){
             throw e;
+        }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    public Recruit createRecruit(PostRecruitReq postRecruitReq, Company company) throws BaseException {
+        User user = userProvider.findUserWithUserJwtToken();
+        if(user.getCompany().getId()!=company.getId())
+            throw new BaseException(BaseResponseStatus.USER_NOT_OWNER_OF_COMPANY);
+        try {
+            Recruit recruit = postRecruitReq.toEntity(company);
+            return recruitRepository.save(recruit);
+        }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    public Recruit updateRecruit(PostRecruitReq postRecruitReq, Company company, long recruitId) throws BaseException{
+        if(userProvider.findUserWithUserJwtToken().getCompany().getId()!=company.getId())
+            throw new BaseException(BaseResponseStatus.USER_NOT_OWNER_OF_COMPANY);
+        Recruit recruit = recruitProvider.getRecruitById(recruitId);
+        recruit.setTitle(postRecruitReq.getTitle());
+        recruit.setDeadline(postRecruitReq.getDeadline());
+        recruit.setDetail(postRecruitReq.getDetail());
+        recruit.setJobGroup(postRecruitReq.getJobGroup());
+        recruit.setPosition(postRecruitReq.getPosition());
+        recruit.setCareer(postRecruitReq.getCareer());
+        try {
+            return recruitRepository.save(recruit);
         }
         catch (Exception e){
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);

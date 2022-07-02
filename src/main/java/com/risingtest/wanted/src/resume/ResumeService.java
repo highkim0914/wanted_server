@@ -2,10 +2,17 @@ package com.risingtest.wanted.src.resume;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
+import com.risingtest.wanted.src.award.AwardService;
 import com.risingtest.wanted.src.award.BasicAward;
 import com.risingtest.wanted.src.career.BasicCareer;
+import com.risingtest.wanted.src.career.CareerService;
 import com.risingtest.wanted.src.education.BasicEducation;
+import com.risingtest.wanted.src.education.EducationService;
+import com.risingtest.wanted.src.jobapplication.JobApplicationService;
 import com.risingtest.wanted.src.language.BasicLanguageSkill;
+import com.risingtest.wanted.src.language.LanguageSkill;
+import com.risingtest.wanted.src.language.LanguageSkillRepository;
+import com.risingtest.wanted.src.language.LanguageSkillService;
 import com.risingtest.wanted.src.resume.model.Resume;
 import com.risingtest.wanted.src.resume.model.ResumeDto;
 import com.risingtest.wanted.src.user.UserProvider;
@@ -26,6 +33,17 @@ public class ResumeService {
 
     @Autowired
     ResumeProvider resumeProvider;
+
+    @Autowired
+    CareerService careerService;
+    @Autowired
+    AwardService awardService;
+    @Autowired
+    EducationService educationService;
+    @Autowired
+    LanguageSkillService languageSkillService;
+    @Autowired
+    JobApplicationService jobApplicationService;
 
     @Transactional
     public Resume createResume() throws BaseException {
@@ -70,26 +88,11 @@ public class ResumeService {
             resume.setPhoneNumber(resumeDto.getPhoneNumber());
             resume.setIntroduction(resume.getIntroduction());
             resume.setExternalLink(resumeDto.getExternalLink());
-            resume.setCareers(resumeDto.getCareers()
-                    .stream()
-                    .map(BasicCareer::toEntity)
-                    .collect(Collectors.toList())
-            );
-            resume.setAwards(resumeDto.getAwards()
-                    .stream()
-                    .map(BasicAward::toEntity)
-                    .collect(Collectors.toList())
-            );
-            resume.setEducations(resumeDto.getEducations()
-                    .stream()
-                    .map(BasicEducation::toEntity)
-                    .collect(Collectors.toList())
-            );
-            resume.setLanguageSkills(resumeDto.getLanguageSkills()
-                    .stream()
-                    .map(BasicLanguageSkill::toEntity)
-                    .collect(Collectors.toList())
-            );
+//            resume.updateCareers(resumeDto.getCareers());
+            careerService.updateCareerByBasicCareer(resumeDto.getCareers(),resume);
+            awardService.updateAwardByBasicAward(resumeDto.getAwards(),resume);
+            educationService.updateEducationByBasicEducation(resumeDto.getEducations(),resume);
+            languageSkillService.updateLanguageSkillByBasicLanguageSkill(resumeDto.getLanguageSkills(),resume);
             if(!resume.getIsFinished()) {
                 resume.setIsFinished(isPermanent);
             }

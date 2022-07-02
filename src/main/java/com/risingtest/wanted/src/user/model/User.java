@@ -31,6 +31,7 @@ public class User extends BaseEntity {
     private String photoUrl;
 
     @ManyToOne
+    @JoinColumn(name = "company_id")
     @JsonBackReference
     private Company company;
 

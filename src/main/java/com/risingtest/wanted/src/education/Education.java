@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Where(clause = "status = 0")
 public class Education extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

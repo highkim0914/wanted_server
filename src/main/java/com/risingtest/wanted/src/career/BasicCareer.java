@@ -1,10 +1,12 @@
 package com.risingtest.wanted.src.career;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.src.result.BasicResult;
 import com.risingtest.wanted.src.result.Result;
 import com.risingtest.wanted.src.resume.model.Resume;
+import com.risingtest.wanted.src.resume.model.ResumeDto;
 import lombok.*;
 
 import javax.persistence.*;

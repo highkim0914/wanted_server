@@ -23,6 +23,7 @@ public enum BaseResponseStatus {
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
     REQUEST_METHOD_ERROR(false,2004,"요청 메소드가 잘못되었습니다."),
     SMS_INVALID_PHONE_NUMBER(false, 2005, "전화번호 형식을 확인해주세요."),
+    REQUEST_MEDIA_TYPE_ERROR(false,2006,"요청 미디어 타입이 잘못되었습니다."),
 
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
@@ -37,6 +38,7 @@ public enum BaseResponseStatus {
     INVALID_EMPLOYEE_NUMBER(false, 2021, "적절한 직원수 입력이 아닙니다. (10인 이상 필수)"),
     INVALID_ESTABLISHMENT_YEAR(false,2022,"적절한 설립년도가 아닙니다."),
     INVALID_REGISTRATION_NUMBER(false,2023,"적절한 사업자번호가 아닙니다."),
+    USER_NOT_OWNER_OF_COMPANY(false, 2024, "자신이 소속된 회사가 아닙니다."),
 
     LOGIN_USER_NO_EMAIL(false,2030,"존재하지 않는 이메일입니다."),
 
@@ -52,6 +54,12 @@ public enum BaseResponseStatus {
     INVALID_INTRODUCTION(false,2102,"최종 저장 시 이력서는 400자 이상이어야 합니다."),
     NO_FOLLOW(false,2110,"존재하지 않는 팔로잉입니다."),
     NO_LIKE(false,2120,"존재하지 않는 좋아요입니다."),
+    NO_CAREER(false,2130,"존재하지 않는 경력입니다."),
+    NO_RESULT(false,2140,"존재하지 않는 결과입니다."),
+    NO_AWARD(false,2150,"존재하지 않는 수상입니다."),
+    NO_EDUCATION(false,2160,"존재하지 않는 학력입니다."),
+    NO_LANGUAGE_SKILL(false,2170,"존재하지 않는 언어 기술입니다."),
+    NO_LANGUAGE_CERTIFICATE(false,2180,"존재하지 않는 언어 자격증입니다."),
 
     UPLOAD_IMAGE_FAIL(false,2500,"이미지 업로드 오류입니다."),
     UPLOAD_IMAGE_INVALID_FILENAME(false,2501,"이미지 파일 이름을 확인해주세요."),

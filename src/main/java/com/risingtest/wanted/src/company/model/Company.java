@@ -35,6 +35,8 @@ public class Company extends BaseEntity {
 
     private String industry;
 
+    private double responseRate;
+
     private int employeesNumber;
 
     private String detail;

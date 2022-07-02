@@ -11,6 +11,4 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostRecruitRes {
     private Long id;
-
-
 }

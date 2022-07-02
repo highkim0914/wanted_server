@@ -8,6 +8,7 @@ import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.company.model.GetCompanyRes;
 import com.risingtest.wanted.src.company.model.PostCompanyReq;
 import com.risingtest.wanted.src.follow.model.BasicFollow;
+import com.risingtest.wanted.src.recruit.RecruitService;
 import com.risingtest.wanted.src.recruit.model.PostRecruitReq;
 import com.risingtest.wanted.src.recruit.model.PostRecruitRes;
 import com.risingtest.wanted.src.recruit.model.Recruit;
@@ -32,6 +33,9 @@ public class CompanyController {
 
     @Autowired
     private CompanyProvider companyProvider;
+
+    @Autowired
+    private RecruitService recruitService;
 
     @PostMapping()
     public BaseResponse<BasicCompany> createCompany(@RequestBody PostCompanyReq postCompanyReq){
@@ -59,7 +63,33 @@ public class CompanyController {
         catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
+    }
 
+    @PatchMapping()
+    public BaseResponse<BasicCompany> updateCompany(@RequestBody PostCompanyReq postCompanyReq){
+        logger.info("updateCompany: {}", postCompanyReq);
+        if(!ValidationRegex.isRegexContactNumber(postCompanyReq.getContactNumber())){
+            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
+        }
+        if(!ValidationRegex.isRegexEmail(postCompanyReq.getEmail())){
+            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
+        }
+        if(postCompanyReq.getEmployeesNumber()<10){
+            return new BaseResponse<>(BaseResponseStatus.INVALID_EMPLOYEE_NUMBER);
+        }
+        if(postCompanyReq.getEstablishmentYear() > LocalDate.now().getYear()){
+            return new BaseResponse<>(BaseResponseStatus.INVALID_ESTABLISHMENT_YEAR);
+        }
+        if(postCompanyReq.getRegistrationNumber().length()!=10){
+            return new BaseResponse<>(BaseResponseStatus.INVALID_REGISTRATION_NUMBER);
+        }
+        try {
+            Company company = companyService.updateCompany(postCompanyReq);
+            return new BaseResponse<>(BasicCompany.from(company));
+        }
+        catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     @GetMapping("/{id}")
@@ -79,7 +109,20 @@ public class CompanyController {
         logger.info("createRecruit: {}", postRecruitReq);
         try {
             Company company = companyProvider.findById(postRecruitReq.getCompanyId());
-            Recruit recruit = companyService.createRecruit(postRecruitReq, company);
+            Recruit recruit = recruitService.createRecruit(postRecruitReq, company);
+            return new BaseResponse<>(new PostRecruitRes(recruit.getId()));
+        }
+        catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @PatchMapping("/recruits/{recruitId}")
+    public BaseResponse<PostRecruitRes> updateRecruit(@PathVariable long recruitId, @RequestBody PostRecruitReq postRecruitReq){
+        logger.info("createRecruit: {}", postRecruitReq);
+        try {
+            Company company = companyProvider.findById(postRecruitReq.getCompanyId());
+            Recruit recruit = recruitService.updateRecruit(postRecruitReq, company, recruitId);
             return new BaseResponse<>(new PostRecruitRes(recruit.getId()));
         }
         catch (BaseException e){

@@ -1,13 +1,17 @@
 package com.risingtest.wanted.src.recruit.model;
 
+import com.risingtest.wanted.src.bookmark.BasicBookmark;
 import com.risingtest.wanted.src.company.model.Company;
+import com.risingtest.wanted.src.follow.model.BasicFollow;
 import com.risingtest.wanted.src.hashtag.CompanyHashtag;
 import com.risingtest.wanted.src.hashtag.model.Hashtag;
+import com.risingtest.wanted.src.likemark.model.BasicLikemark;
 import com.risingtest.wanted.src.techstack.CompanyTechstack;
 import com.risingtest.wanted.src.techstack.model.Techstack;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +24,14 @@ public class GetRecruitRes extends BasicRecruitRes{
     private List<Long> hashtags;
 
     private List<Long> techstacks;
+
+    private List<BasicBookmark> bookmarks;
+
+    private List<BasicLikemark> likemarks;
+
+    private List<BasicFollow> follows;
+
+    private long count;
 
     public static GetRecruitRes from(Recruit recruit, Company company){
         String companyPhotos = company.getPhotoUrl()==null? "" :company.getPhotoUrl();
@@ -48,6 +60,9 @@ public class GetRecruitRes extends BasicRecruitRes{
                         .map(Techstack::getId)
                         .collect(Collectors.toList())
                 )
+                .bookmarks(new ArrayList<>())
+                .likemarks(new ArrayList<>())
+                .follows(new ArrayList<>())
                 .build();
 
     }

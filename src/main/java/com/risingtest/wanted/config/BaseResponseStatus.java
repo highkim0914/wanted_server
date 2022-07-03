@@ -39,6 +39,7 @@ public enum BaseResponseStatus {
     INVALID_ESTABLISHMENT_YEAR(false,2022,"적절한 설립년도가 아닙니다."),
     INVALID_REGISTRATION_NUMBER(false,2023,"적절한 사업자번호가 아닙니다."),
     USER_NOT_OWNER_OF_COMPANY(false, 2024, "자신이 소속된 회사가 아닙니다."),
+    COMPANY_NOT_OWNER_OF_RECRUIT(false,2025,"현재 회사의 채용 공고가 아닙니다."),
 
     LOGIN_USER_NO_EMAIL(false,2030,"존재하지 않는 이메일입니다."),
 
@@ -48,6 +49,7 @@ public enum BaseResponseStatus {
     POST_BOOKMARK_EXISTS(false,2070,"이미 북마크되어 있는 채용공고입니다."),
     NO_BOOKMARK(false,2071,"북마크되지 않은 채용공고입니다."),
     NO_COMPANY(false,2080,"존재하지 않는 회사입니다."),
+    USERS_EXISTS_COMPANY(false, 2081, "이미 소속된 회사가 있습니다."),
     NO_LIKE_MARK(false,2090,"존재하지 않는 좋아요입니다."),
     NO_RESUME(false,2100,"존재하지 않는 이력서입니다."),
     RESUME_NOT_OWNED_BY_USER(false,2101, "현재 유저의 이력서가 아닙니다."),

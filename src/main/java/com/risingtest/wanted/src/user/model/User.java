@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     private String phoneNumber;
     private String photoUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     @JsonBackReference
     private Company company;

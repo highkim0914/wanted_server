@@ -49,6 +49,6 @@ spring:
 
 app:
   upload:
-    #dir : /home/ubuntu/images/users
+    #dir : /home/ubuntu/wanted/images
     dir : C://wanted//images
     seperator : //

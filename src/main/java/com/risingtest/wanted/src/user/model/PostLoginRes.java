@@ -11,4 +11,5 @@ public class PostLoginRes {
 
     private String jwt;
     private long id;
+    private String photoUrl;
 }

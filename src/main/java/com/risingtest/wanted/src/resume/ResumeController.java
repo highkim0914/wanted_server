@@ -67,6 +67,17 @@ public class ResumeController {
         }
     }
 
+    @PostMapping("/{resumeId}")
+    public BaseResponse<BaseResponseStatus> deleteResume(@PathVariable long resumeId){
+        try {
+            resumeService.deleteResume(resumeId);
+            return new BaseResponse<>(BaseResponseStatus.SUCCESS);
+        }
+        catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
     @PatchMapping("/{resumeId}")
     public BaseResponse<BaseResponseStatus> updateResume(@RequestBody ResumeDto resumeDto,
                                                          @PathVariable long resumeId,

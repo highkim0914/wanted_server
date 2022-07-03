@@ -37,60 +37,60 @@ public class CompanyController {
     @Autowired
     private RecruitService recruitService;
 
-    @PostMapping()
-    public BaseResponse<BasicCompany> createCompany(@RequestBody PostCompanyReq postCompanyReq){
-        logger.info("createCompany: {}", postCompanyReq);
-        if(!ValidationRegex.isRegexContactNumber(postCompanyReq.getContactNumber())){
-            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
-        }
-        if(!ValidationRegex.isRegexEmail(postCompanyReq.getEmail())){
-            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
-        }
-        if(postCompanyReq.getEmployeesNumber()<10){
-            return new BaseResponse<>(BaseResponseStatus.INVALID_EMPLOYEE_NUMBER);
-        }
-        if(postCompanyReq.getEstablishmentYear() > LocalDate.now().getYear()){
-            return new BaseResponse<>(BaseResponseStatus.INVALID_ESTABLISHMENT_YEAR);
-        }
-
-        if(postCompanyReq.getRegistrationNumber().length()!=10){
-            return new BaseResponse<>(BaseResponseStatus.INVALID_REGISTRATION_NUMBER);
-        }
-        try {
-            Company company = companyService.createCompany(postCompanyReq);
-            return new BaseResponse<>(BasicCompany.from(company));
-        }
-        catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
-    @PatchMapping()
-    public BaseResponse<BasicCompany> updateCompany(@RequestBody PostCompanyReq postCompanyReq){
-        logger.info("updateCompany: {}", postCompanyReq);
-        if(!ValidationRegex.isRegexContactNumber(postCompanyReq.getContactNumber())){
-            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
-        }
-        if(!ValidationRegex.isRegexEmail(postCompanyReq.getEmail())){
-            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
-        }
-        if(postCompanyReq.getEmployeesNumber()<10){
-            return new BaseResponse<>(BaseResponseStatus.INVALID_EMPLOYEE_NUMBER);
-        }
-        if(postCompanyReq.getEstablishmentYear() > LocalDate.now().getYear()){
-            return new BaseResponse<>(BaseResponseStatus.INVALID_ESTABLISHMENT_YEAR);
-        }
-        if(postCompanyReq.getRegistrationNumber().length()!=10){
-            return new BaseResponse<>(BaseResponseStatus.INVALID_REGISTRATION_NUMBER);
-        }
-        try {
-            Company company = companyService.updateCompany(postCompanyReq);
-            return new BaseResponse<>(BasicCompany.from(company));
-        }
-        catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
+//    @PostMapping()
+//    public BaseResponse<BasicCompany> createCompany(@RequestBody PostCompanyReq postCompanyReq){
+//        logger.info("createCompany: {}", postCompanyReq);
+//        if(!ValidationRegex.isRegexContactNumber(postCompanyReq.getContactNumber())){
+//            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
+//        }
+//        if(!ValidationRegex.isRegexEmail(postCompanyReq.getEmail())){
+//            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
+//        }
+//        if(postCompanyReq.getEmployeesNumber()<10){
+//            return new BaseResponse<>(BaseResponseStatus.INVALID_EMPLOYEE_NUMBER);
+//        }
+//        if(postCompanyReq.getEstablishmentYear() > LocalDate.now().getYear()){
+//            return new BaseResponse<>(BaseResponseStatus.INVALID_ESTABLISHMENT_YEAR);
+//        }
+//
+//        if(postCompanyReq.getRegistrationNumber().length()!=10){
+//            return new BaseResponse<>(BaseResponseStatus.INVALID_REGISTRATION_NUMBER);
+//        }
+//        try {
+//            Company company = companyService.createCompany(postCompanyReq);
+//            return new BaseResponse<>(BasicCompany.from(company));
+//        }
+//        catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
+//
+//    @PatchMapping()
+//    public BaseResponse<BasicCompany> updateCompany(@RequestBody PostCompanyReq postCompanyReq){
+//        logger.info("updateCompany: {}", postCompanyReq);
+//        if(!ValidationRegex.isRegexContactNumber(postCompanyReq.getContactNumber())){
+//            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
+//        }
+//        if(!ValidationRegex.isRegexEmail(postCompanyReq.getEmail())){
+//            return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
+//        }
+//        if(postCompanyReq.getEmployeesNumber()<10){
+//            return new BaseResponse<>(BaseResponseStatus.INVALID_EMPLOYEE_NUMBER);
+//        }
+//        if(postCompanyReq.getEstablishmentYear() > LocalDate.now().getYear()){
+//            return new BaseResponse<>(BaseResponseStatus.INVALID_ESTABLISHMENT_YEAR);
+//        }
+//        if(postCompanyReq.getRegistrationNumber().length()!=10){
+//            return new BaseResponse<>(BaseResponseStatus.INVALID_REGISTRATION_NUMBER);
+//        }
+//        try {
+//            Company company = companyService.updateCompany(postCompanyReq);
+//            return new BaseResponse<>(BasicCompany.from(company));
+//        }
+//        catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
 
     @GetMapping("/{id}")
     public BaseResponse<GetCompanyRes> getCompany(@PathVariable long id){
@@ -104,59 +104,59 @@ public class CompanyController {
         }
     }
 
-    @PostMapping("/recruits")
-    public BaseResponse<PostRecruitRes> createRecruit(@RequestBody PostRecruitReq postRecruitReq){
-        logger.info("createRecruit: {}", postRecruitReq);
-        try {
-            Company company = companyProvider.findById(postRecruitReq.getCompanyId());
-            Recruit recruit = recruitService.createRecruit(postRecruitReq, company);
-            return new BaseResponse<>(new PostRecruitRes(recruit.getId()));
-        }
-        catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
-    @PatchMapping("/recruits/{recruitId}")
-    public BaseResponse<PostRecruitRes> updateRecruit(@PathVariable long recruitId, @RequestBody PostRecruitReq postRecruitReq){
-        logger.info("createRecruit: {}", postRecruitReq);
-        try {
-            Company company = companyProvider.findById(postRecruitReq.getCompanyId());
-            Recruit recruit = recruitService.updateRecruit(postRecruitReq, company, recruitId);
-            return new BaseResponse<>(new PostRecruitRes(recruit.getId()));
-        }
-        catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
-    @PostMapping("/photos")
-    public BaseResponse<String> uploadCompanyImages(@RequestPart List<MultipartFile> images){
-        logger.info("uploadCompanyImages: {}", images.stream().map(MultipartFile::getName).collect(Collectors.toList()));
-        try {
-            long id = 1;
-            //id = jwtService.getUserIdx();
-            String photoUrl = companyService.uploadCompanyImagesAndSetPhotoUrl(id, images);
-            return new BaseResponse<>(photoUrl);
-        }
-        catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
-    @PostMapping("/profile-photos")
-    public BaseResponse<String> uploadCompanyProfileImages(@RequestPart MultipartFile image){
-        logger.info("uploadCompanyProfileImages: {}", image.getName());
-        try {
-            long id = 1;
-            //id = jwtService.getUserIdx();
-            String photoUrl = companyService.uploadCompanyProfileImageAndProfilePhotoUrl(id, image);
-            return new BaseResponse<>(photoUrl);
-        }
-        catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
+//    @PostMapping("/recruits")
+//    public BaseResponse<PostRecruitRes> createRecruit(@RequestBody PostRecruitReq postRecruitReq){
+//        logger.info("createRecruit: {}", postRecruitReq);
+//        try {
+//            Company company = companyProvider.findById(postRecruitReq.getCompanyId());
+//            Recruit recruit = recruitService.createRecruit(postRecruitReq, company);
+//            return new BaseResponse<>(new PostRecruitRes(recruit.getId()));
+//        }
+//        catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
+//
+//    @PatchMapping("/recruits/{recruitId}")
+//    public BaseResponse<PostRecruitRes> updateRecruit(@PathVariable long recruitId, @RequestBody PostRecruitReq postRecruitReq){
+//        logger.info("createRecruit: {}", postRecruitReq);
+//        try {
+//            Company company = companyProvider.findById(postRecruitReq.getCompanyId());
+//            Recruit recruit = recruitService.updateRecruit(postRecruitReq, company, recruitId);
+//            return new BaseResponse<>(new PostRecruitRes(recruit.getId()));
+//        }
+//        catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
+//
+//    @PostMapping("/photos")
+//    public BaseResponse<String> uploadCompanyImages(@RequestPart List<MultipartFile> images){
+//        logger.info("uploadCompanyImages: {}", images.stream().map(MultipartFile::getName).collect(Collectors.toList()));
+//        try {
+//            long id = 1;
+//            //id = jwtService.getUserIdx();
+//            String photoUrl = companyService.uploadCompanyImagesAndSetPhotoUrl(id, images);
+//            return new BaseResponse<>(photoUrl);
+//        }
+//        catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
+//
+//    @PostMapping("/profile-photos")
+//    public BaseResponse<String> uploadCompanyProfileImages(@RequestPart MultipartFile image){
+//        logger.info("uploadCompanyProfileImages: {}", image.getName());
+//        try {
+//            long id = 1;
+//            //id = jwtService.getUserIdx();
+//            String photoUrl = companyService.uploadCompanyProfileImageAndProfilePhotoUrl(id, image);
+//            return new BaseResponse<>(photoUrl);
+//        }
+//        catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
 
     @PostMapping("/{companyId}/follows")
     public BaseResponse<BasicFollow> toggleFollow(@PathVariable long companyId){

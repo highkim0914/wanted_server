@@ -11,6 +11,7 @@ import com.risingtest.wanted.src.jobapplication.JobApplication;
 import com.risingtest.wanted.src.language.LanguageSkill;
 import com.risingtest.wanted.src.user.model.User;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Where(clause = "status = 0")
 public class Resume extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +48,7 @@ public class Resume extends BaseEntity {
 
     private Boolean isFinished;
 
+
     @OneToMany(mappedBy = "resume")
     @JsonManagedReference
     @ToString.Exclude
@@ -69,6 +72,8 @@ public class Resume extends BaseEntity {
     @ToString.Exclude
     @Builder.Default
     private List<LanguageSkill> languageSkills = new ArrayList<>();
+
+    private String skills;
 
     @OneToMany(mappedBy = "resume")
     @JsonManagedReference

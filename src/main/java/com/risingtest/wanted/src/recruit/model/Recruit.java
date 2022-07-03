@@ -39,6 +39,7 @@ public class Recruit extends BaseEntity {
     private String location;
 
 //    private String address;
+//    private
 
     private LocalDate deadline;
 

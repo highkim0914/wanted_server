@@ -86,9 +86,9 @@ public class UserService {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
             StringJoiner joiner = new StringJoiner(seperator,seperator,"");
-            joiner.add("resources");
+            //joiner.add("resources");
             joiner.add("images");
-            joiner.add("users");
+            joiner.add(USER_IMAGE_FOLDER);
             joiner.add(saveFileImage);
             return joiner.toString();
         }
@@ -167,8 +167,11 @@ public class UserService {
         }
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(Company company) throws BaseException{
         User user = userProvider.findUserWithUserJwtToken();
+        if(user.getCompany()!=null){
+            throw new BaseException(BaseResponseStatus.USERS_EXISTS_COMPANY);
+        }
         user.setCompany(company);
         user = userRepository.save(user);
     }

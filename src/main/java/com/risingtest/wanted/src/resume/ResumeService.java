@@ -65,6 +65,7 @@ public class ResumeService {
             resume.setPhoneNumber("");
             resume.setIntroduction("");
             resume.setExternalLink("");
+            resume.setSkills("");
 
             return resumeRepository.save(resume);
         }
@@ -88,6 +89,7 @@ public class ResumeService {
             resume.setPhoneNumber(resumeDto.getPhoneNumber());
             resume.setIntroduction(resume.getIntroduction());
             resume.setExternalLink(resumeDto.getExternalLink());
+            resume.setSkills(String.join( ",",resumeDto.getSkills().toArray(new String[0])));
 //            resume.updateCareers(resumeDto.getCareers());
             careerService.updateCareerByBasicCareer(resumeDto.getCareers(),resume);
             awardService.updateAwardByBasicAward(resumeDto.getAwards(),resume);
@@ -97,6 +99,22 @@ public class ResumeService {
                 resume.setIsFinished(isPermanent);
             }
             return resumeRepository.save(resume);
+        }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    @Transactional
+    public void deleteResume(long resumeId) throws BaseException{
+        User user = userProvider.findUserWithUserJwtToken();
+        Resume resume = resumeProvider.findById(resumeId);
+        if(resume.getUser().getId()!=user.getId()){
+            throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
+        }
+        try {
+            resume.setStatus(1);
+            resumeRepository.save(resume);
         }
         catch (Exception e){
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);

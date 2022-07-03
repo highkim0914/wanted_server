@@ -14,7 +14,7 @@ public class RecruitSpecification {
         return new Specification<Recruit>() {
             @Override
             public Predicate toPredicate(Root<Recruit> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("job_group"),jobGroup);
+                return criteriaBuilder.equal(root.get("jobGroup"),jobGroup);
             }
         };
     }
@@ -33,15 +33,6 @@ public class RecruitSpecification {
         };
     }
 
-/*    public static Specification<Recruit> equalsToPosition(String position){
-        return new Specification<Recruit>() {
-            @Override
-            public Predicate toPredicate(Root<Recruit> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("position"), position);
-            }
-        };
-    }*/
-
     public static Specification<Recruit> equalsToPositions(List<String> positions){
         return new Specification<Recruit>() {
             @Override
@@ -52,17 +43,6 @@ public class RecruitSpecification {
             }
         };
     }
-
-
-
-/*    public static Specification<Recruit> equalsToLocation(String location){
-        return new Specification<Recruit>() {
-            @Override
-            public Predicate toPredicate(Root<Recruit> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("location"),location);
-            }
-        };
-    }*/
 
     public static Specification<Recruit> equalsToLocations(List<String> locations) {
         return new Specification<Recruit>() {
@@ -101,14 +81,4 @@ public class RecruitSpecification {
             }
         };
     }
-
-
-/*    public static Specification<Recruit> distinct() {
-        return new Specification<Recruit>() {
-            @Override
-            public Predicate toPredicate(Root<Recruit> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-
-            }
-        };
-    }*/
 }

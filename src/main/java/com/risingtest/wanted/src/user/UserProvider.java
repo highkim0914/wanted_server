@@ -3,6 +3,9 @@ package com.risingtest.wanted.src.user;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
+import com.risingtest.wanted.src.bookmark.BasicBookmark;
+import com.risingtest.wanted.src.follow.model.BasicFollow;
+import com.risingtest.wanted.src.likemark.model.BasicLikemark;
 import com.risingtest.wanted.src.user.model.*;
 import com.risingtest.wanted.utils.JwtService;
 import com.risingtest.wanted.utils.SHA256;
@@ -10,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.risingtest.wanted.config.BaseResponseStatus.*;
 
@@ -78,13 +84,41 @@ public class UserProvider {
 
         if(user.getPassword().equals(encryptPwd)){
             long userIdx = user.getId();
+            String photoUrl = user.getPhotoUrl();
             String jwt = jwtService.createJwt(userIdx);
-            return new PostLoginRes(jwt,userIdx);
+            return new PostLoginRes(jwt,userIdx, photoUrl);
         }
         else{
             throw new BaseException(FAILED_TO_LOGIN);
         }
 
+    }
+
+    public List<BasicBookmark> findBookmarksWithUserToken() throws BaseException{
+        User user = findUserWithUserJwtToken();
+        List<BasicBookmark> list = user.getBookmarks().stream()
+                .map(BasicBookmark::from)
+                .filter(basicBookmark -> basicBookmark.getStatus()==0)
+                .collect(Collectors.toList());
+        return list;
+    }
+
+    public List<BasicLikemark> findLikemarksWithUserToken() throws BaseException{
+        User user = findUserWithUserJwtToken();
+        List<BasicLikemark> list = user.getLikeMarks().stream()
+                .map(BasicLikemark::from)
+                .filter(basicLikemark -> basicLikemark.getStatus()==0)
+                .collect(Collectors.toList());
+        return list;
+    }
+
+    public List<BasicFollow> findFollowsWithUserToken() throws BaseException{
+        User user = findUserWithUserJwtToken();
+        List<BasicFollow> list = user.getFollows().stream()
+                .map(BasicFollow::from)
+                .filter(basicFollow -> basicFollow.getStatus()==0)
+                .collect(Collectors.toList());
+        return list;
     }
 
 }

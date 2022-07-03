@@ -14,6 +14,8 @@ import com.risingtest.wanted.src.language.LanguageSkill;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +47,8 @@ public class ResumeDto {
 
     private List<BasicLanguageSkill> languageSkills;
 
+    private List<String> skills;
+
     private List<BasicJobApplication> jobApplications;
 
     public static ResumeDto from(Resume resume) {
@@ -56,6 +60,7 @@ public class ResumeDto {
                 .phoneNumber(resume.getPhoneNumber())
                 .introduction(resume.getIntroduction())
                 .externalLink(resume.getExternalLink())
+                .skills(Arrays.asList(resume.getSkills().split(",")))
                 .careers(resume.getCareers()
                         .stream()
                         .map(BasicCareer::from)

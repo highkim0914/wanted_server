@@ -9,7 +9,6 @@ import com.risingtest.wanted.src.company.CompanyProvider;
 import com.risingtest.wanted.src.jobapplication.JobApplicationFormReq;
 import com.risingtest.wanted.src.jobapplication.PostJobApplicationReq;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;
-import com.risingtest.wanted.src.recruit.model.BasicRecruitRes;
 import com.risingtest.wanted.src.recruit.model.GetRecruitRes;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.utils.ValidationRegex;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -51,7 +49,7 @@ public class RecruitController {
     }
 
     @GetMapping
-    public BaseResponse<List<BasicRecruitRes>> getRecruitsWithFilter(@RequestParam(name = "job_group", defaultValue = "") String jobGroup,
+    public BaseResponse<RecruitsAndBookmarksRes> getRecruitsWithFilter(@RequestParam(name = "job_group", defaultValue = "") String jobGroup,
                                                              @RequestParam(name = "years", defaultValue = "0") List<Integer> years,
                                                              @RequestParam(name = "positions", defaultValue = "") List<String> positions,
                                                              @RequestParam(name = "locations", defaultValue = "") List<String> locations,
@@ -62,8 +60,8 @@ public class RecruitController {
         if(years.size()>2){
             return new BaseResponse<>(BaseResponseStatus.GET_RECRUIT_TOO_MANY_YEARS);
         }
-        List<BasicRecruitRes> list = recruitProvider.getRecruitsWithFilter(jobGroup, years,  positions, locations, hashtags, techstacks);
-        return new BaseResponse<>(list);
+        RecruitsAndBookmarksRes recruitsAndBookmarksRes = recruitProvider.getRecruitsWithFilter(jobGroup, years,  positions, locations, hashtags, techstacks);
+        return new BaseResponse<>(recruitsAndBookmarksRes);
     }
 
     @GetMapping("/{id}/application")
@@ -97,9 +95,9 @@ public class RecruitController {
     public BaseResponse<GetRecruitRes> getRecruitById(@PathVariable long id){
         logger.info("getRecruitById : " + id);
         try {
-            Recruit recruit = recruitProvider.getRecruitById(id);
-            Company company = recruit.getCompany();
-            return new BaseResponse<>(GetRecruitRes.from(recruit,company));
+            GetRecruitRes getRecruitRes = recruitProvider.getRecruitRes(id);
+
+            return new BaseResponse<>(getRecruitRes);
         }
         catch (BaseException e){
             return new BaseResponse<>(e.getStatus());

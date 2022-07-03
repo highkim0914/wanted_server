@@ -2,6 +2,7 @@ package com.risingtest.wanted.src.company.model;
 
 import com.risingtest.wanted.src.hashtag.CompanyHashtag;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class GetCompanyRes extends BasicCompany{
                 .contactNumber(company.getContactNumber())
                 .subscriptionPath(company.getSubscriptionPath())
                 .profilePhotoUrl(company.getProfilePhotoUrl())
-                .photoUrl(company.getPhotoUrl())
+                .photoUrls(Arrays.stream(company.getPhotoUrl().split(",")).collect(Collectors.toList()))
                 .recruit(company.getRecruit().stream()
                         .map(BasicRecruitRes::from)
                         .collect(Collectors.toList())

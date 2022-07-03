@@ -112,7 +112,7 @@ public class RecruitService {
     @Transactional
     public void createJobApplyWithRecruitId(PostJobApplicationReq postJobApplicationReq, long id) throws BaseException{
         try {
-            Recruit recruit = recruitProvider.getRecruitById(id);
+            Recruit recruit = recruitProvider.findRecruitById(id);
             Resume resume = resumeProvider.findById(postJobApplicationReq.getResumeId());
             User user = userProvider.findUserWithUserJwtToken();
             if(!resume.getUser().equals(user)){
@@ -144,7 +144,10 @@ public class RecruitService {
     public Recruit updateRecruit(PostRecruitReq postRecruitReq, Company company, long recruitId) throws BaseException{
         if(userProvider.findUserWithUserJwtToken().getCompany().getId()!=company.getId())
             throw new BaseException(BaseResponseStatus.USER_NOT_OWNER_OF_COMPANY);
-        Recruit recruit = recruitProvider.getRecruitById(recruitId);
+
+        Recruit recruit = recruitProvider.findRecruitById(recruitId);
+        if(recruit.getCompany().getId()!=company.getId())
+            throw new BaseException(BaseResponseStatus.COMPANY_NOT_OWNER_OF_RECRUIT);
         recruit.setTitle(postRecruitReq.getTitle());
         recruit.setDeadline(postRecruitReq.getDeadline());
         recruit.setDetail(postRecruitReq.getDetail());

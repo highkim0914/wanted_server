@@ -3,6 +3,10 @@ package com.risingtest.wanted.src.company.model;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,7 +41,7 @@ public class BasicCompany {
 
     private String profilePhotoUrl;
 
-    private String photoUrl;
+    private List<String> photoUrls;
 
 
     public static BasicCompany from(Company company){
@@ -56,7 +60,7 @@ public class BasicCompany {
                 .contactNumber(company.getContactNumber())
                 .subscriptionPath(company.getSubscriptionPath())
                 .profilePhotoUrl(company.getProfilePhotoUrl())
-                .photoUrl(company.getPhotoUrl())
+                .photoUrls(Arrays.stream(company.getPhotoUrl().split(",")).collect(Collectors.toList()))
                 .build();
     }
 }

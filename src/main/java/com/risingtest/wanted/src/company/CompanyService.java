@@ -7,9 +7,7 @@ import com.risingtest.wanted.src.company.model.PostCompanyReq;
 import com.risingtest.wanted.src.follow.model.BasicFollow;
 import com.risingtest.wanted.src.follow.model.Follow;
 import com.risingtest.wanted.src.follow.FollowService;
-import com.risingtest.wanted.src.recruit.model.PostRecruitReq;
 import com.risingtest.wanted.src.recruit.RecruitRepository;
-import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.user.UserProvider;
 import com.risingtest.wanted.src.user.UserService;
 import com.risingtest.wanted.src.user.model.User;
@@ -70,28 +68,41 @@ public class CompanyService {
         }
     }
 
-    public String uploadCompanyImagesAndSetPhotoUrl(long id, List<MultipartFile> images) throws BaseException{
-        Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_COMPANY));
+    public String uploadCompanyImagesAndSetPhotoUrl(List<MultipartFile> images) throws BaseException{
 
+        User user = userProvider.findUserWithUserJwtToken();
+        Company company = user.getCompany();
+        if(user.getCompany().getId()!=company.getId()){
+            throw new BaseException(BaseResponseStatus.USER_NOT_OWNER_OF_COMPANY);
+        }
         StringJoiner resultJoiner = new StringJoiner(",");
         int count = 1;
 
-        for(MultipartFile file : images){
+        for (MultipartFile file : images) {
             //logger.info("uploaded image original file name : "+ originalFileName);
-            resultJoiner.add(uploadFile(file,id,count));
+            resultJoiner.add(uploadFile(file, company.getId(), count));
             count++;
         }
+        try {
+            String photoUrl = resultJoiner.toString();
+            company.setPhotoUrl(photoUrl);
+            return photoUrl;
+        }
+        catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
 
-        String photoUrl = resultJoiner.toString();
-        company.setPhotoUrl(photoUrl);
-        return photoUrl;
     }
 
-    public String uploadCompanyProfileImageAndProfilePhotoUrl(long id, MultipartFile file) throws BaseException{
-        Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_COMPANY));
-        String profilePhotoUrl = uploadFile(file,id,0);
+    public String uploadCompanyProfileImageAndProfilePhotoUrl(MultipartFile file) throws BaseException{
+//        Company company = companyRepository.findById(id)
+//                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_COMPANY));
+        User user = userProvider.findUserWithUserJwtToken();
+        Company company = user.getCompany();
+        if(user.getCompany().getId()!=company.getId()){
+            throw new BaseException(BaseResponseStatus.USER_NOT_OWNER_OF_COMPANY);
+        }
+        String profilePhotoUrl = uploadFile(file,company.getId(),0);
         company.setProfilePhotoUrl(profilePhotoUrl);
         return profilePhotoUrl;
     }
@@ -118,7 +129,7 @@ public class CompanyService {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
             StringJoiner joiner = new StringJoiner(seperator, seperator, "");
-            joiner.add("resources");
+            //joiner.add("resources");
             joiner.add("images");
             joiner.add(COMPANY_IMAGE_FOLDER);
             joiner.add(saveFileImage);

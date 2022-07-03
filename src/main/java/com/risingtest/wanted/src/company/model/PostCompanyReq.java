@@ -48,7 +48,7 @@ public class PostCompanyReq {
                 .email(email)
                 .contactNumber(contactNumber)
                 .subscriptionPath(subscriptionPath)
-                .responseRate(0.85)
+                .responseRate(1.0)
                 .photoUrl("")
                 .profilePhotoUrl("")
                 .companyHashtags(new ArrayList<>())

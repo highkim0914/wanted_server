@@ -54,6 +54,7 @@ public enum BaseResponseStatus {
     NO_RESUME(false,2100,"존재하지 않는 이력서입니다."),
     RESUME_NOT_OWNED_BY_USER(false,2101, "현재 유저의 이력서가 아닙니다."),
     INVALID_INTRODUCTION(false,2102,"최종 저장 시 이력서는 400자 이상이어야 합니다."),
+    RESUME_NOT_FINISHED(false,2103,"최종 저장되지 않은 이력서를 사용할 수 없습니다."),
     NO_FOLLOW(false,2110,"존재하지 않는 팔로잉입니다."),
     NO_LIKE(false,2120,"존재하지 않는 좋아요입니다."),
     NO_CAREER(false,2130,"존재하지 않는 경력입니다."),
@@ -62,6 +63,11 @@ public enum BaseResponseStatus {
     NO_EDUCATION(false,2160,"존재하지 않는 학력입니다."),
     NO_LANGUAGE_SKILL(false,2170,"존재하지 않는 언어 기술입니다."),
     NO_LANGUAGE_CERTIFICATE(false,2180,"존재하지 않는 언어 자격증입니다."),
+    NO_ARTICLE(false,2190,"존재하지 않는 게시물입니다."),
+    USER_NO_COMMUNITY_NICKNAME(false,2191, "아직 커뮤니티 닉네임을 설정하지 않았습니다. 닉네임을 정해주세요."),
+    EMPTY_COMMUNITY_NICKNAME(false,2192,"빈 닉네임은 사용할 수 없습니다. 닉네임을 입력하세요."),
+    NO_ARTICLE_COMMENT(false,2200,"존재하지 않는 게시물 댓글입니다."),
+
 
     UPLOAD_IMAGE_FAIL(false,2500,"이미지 업로드 오류입니다."),
     UPLOAD_IMAGE_INVALID_FILENAME(false,2501,"이미지 파일 이름을 확인해주세요."),

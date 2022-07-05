@@ -1,4 +1,4 @@
-package com.risingtest.wanted.src.jobapplication;
+package com.risingtest.wanted.src.jobapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;

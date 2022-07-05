@@ -1,8 +1,5 @@
-package com.risingtest.wanted.src.jobapplication;
+package com.risingtest.wanted.src.jobapplication.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.risingtest.wanted.src.resume.model.ResumeDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

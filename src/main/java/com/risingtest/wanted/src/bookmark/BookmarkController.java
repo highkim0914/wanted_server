@@ -20,10 +20,9 @@ public class BookmarkController {
     @GetMapping()
     public BaseResponse<List<BasicBookmark>> getBookmarks(){
         try {
-            List<BasicBookmark> basicBookmarks = bookmarkProvider.findAllByUserToken()
+            List<BasicBookmark> basicBookmarks = bookmarkProvider.findAllWithUserToken()
                     .stream()
                     .map(BasicBookmark::from)
-                    .filter(basicBookmark -> basicBookmark.getStatus()==0)
                     .collect(Collectors.toList());
             return new BaseResponse<>(basicBookmarks);
         }

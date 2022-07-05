@@ -1,13 +1,11 @@
 package com.risingtest.wanted.src.likemark;
 
 import com.risingtest.wanted.src.likemark.model.Likemark;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.LockModeType;
-import javax.persistence.QueryHint;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,5 +16,8 @@ public interface LikemarkRepository extends JpaRepository<Likemark,Long> {
 
     List<Likemark> findAllByIdAndStatus(long id, int status);
 
-    List<Likemark> findAllByUserId(long userId);
+    List<Likemark> findAllByUserIdAndStatus(long userId, int i);
+
+    @Query(value = "select l.recruit_id from likemark l where l.user_id = ?1 and l.status = ?2",nativeQuery = true)
+    List<Long> findRecruitIdsByUserIdAndStatus(long userIdx, int i);
 }

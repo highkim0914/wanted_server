@@ -2,6 +2,7 @@ package com.risingtest.wanted.src.bookmark;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.LockModeType;
 import java.util.List;
@@ -11,5 +12,9 @@ public interface BookmarkRepository extends JpaRepository<Bookmark,Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Bookmark> findByRecruitIdAndUserId(long recruitId, long userId);
 
-    List<Bookmark> findAllByUserId(long userId);
+    List<Bookmark> findAllByUserIdAndStatus(long userId, int status);
+
+
+    @Query(value = "select b.recruit_id from bookmark b where b.user_id = ?1 and b.status = ?2",nativeQuery = true)
+    List<Long> findRecruitIdByUserIdAndStatus(long userIdx, int status);
 }

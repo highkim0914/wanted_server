@@ -11,12 +11,15 @@ import com.risingtest.wanted.src.recruit.RecruitRepository;
 import com.risingtest.wanted.src.user.UserProvider;
 import com.risingtest.wanted.src.user.UserService;
 import com.risingtest.wanted.src.user.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -47,14 +51,19 @@ public class CompanyService {
     @Value("${app.upload.dir}")
     private String uploadDir;
 
-    @Value("${app.upload.seperator}")
-    private String seperator;
+    @Value("${app.upload.separator}")
+    private String separator;
 
     private final String COMPANY_IMAGE_PREFIX = "company_image_";
     private final String COMPANY_IMAGE_FOLDER = "companies";
 
     @Transactional
     public Company createCompany(PostCompanyReq postCompanyReq) throws BaseException {
+        logger.info("createCompany: {}", postCompanyReq);
+        User user = userProvider.findUserWithUserJwtToken();
+        if(user.getCompany()!=null){
+            throw new BaseException(BaseResponseStatus.USERS_EXISTS_COMPANY);
+        }
         try {
             Company company = companyRepository.save(postCompanyReq.toEntity());
             userService.setCompany(company);
@@ -69,7 +78,6 @@ public class CompanyService {
     }
 
     public String uploadCompanyImagesAndSetPhotoUrl(List<MultipartFile> images) throws BaseException{
-
         User user = userProvider.findUserWithUserJwtToken();
         Company company = user.getCompany();
         if(user.getCompany().getId()!=company.getId()){
@@ -113,31 +121,32 @@ public class CompanyService {
         if(split.length!=2) {
             throw new BaseException(BaseResponseStatus.UPLOAD_IMAGE_INVALID_FILENAME);
         }
+        String type = split[1];
+
+        String saveFileImage = COMPANY_IMAGE_PREFIX + id + "-" + suffixNumber +"." + type;
+
+        String[] pathString = new String[]{uploadDir, COMPANY_IMAGE_FOLDER, saveFileImage};
+
+        Path path = Paths.get(Arrays.stream(pathString)
+                .map(String::valueOf)
+                .collect(Collectors.joining(separator, "", "")));
+
+        logger.info(path.toString());
+
         try {
-            String type = split[1];
-
-            String saveFileImage = COMPANY_IMAGE_PREFIX + id + "-" + suffixNumber +"." + type;
-
-            String[] pathString = new String[]{uploadDir, COMPANY_IMAGE_FOLDER, saveFileImage};
-
-            Path path = Paths.get(Arrays.stream(pathString)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(seperator, "", "")));
-
-            //logger.info(path.toString());
-
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-            StringJoiner joiner = new StringJoiner(seperator, seperator, "");
-            //joiner.add("resources");
-            joiner.add("images");
-            joiner.add(COMPANY_IMAGE_FOLDER);
-            joiner.add(saveFileImage);
-            return joiner.toString();
+            byte[] bytes = file.getBytes();
+            Files.write(path,bytes);
         }
-        catch (Exception e){
-            throw new BaseException(BaseResponseStatus.UPLOAD_IMAGE_FAIL);
+        catch (IOException e){
+            e.printStackTrace();
         }
+
+        StringJoiner joiner = new StringJoiner(separator, separator, "");
+        //joiner.add("resources");
+        joiner.add("images");
+        joiner.add(COMPANY_IMAGE_FOLDER);
+        joiner.add(saveFileImage);
+        return joiner.toString();
     }
 
     @Transactional

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
 import com.risingtest.wanted.src.bookmark.Bookmark;
 import com.risingtest.wanted.src.company.model.Company;
-import com.risingtest.wanted.src.jobapplication.JobApplication;
+import com.risingtest.wanted.src.jobapplication.model.JobApplication;
 import com.risingtest.wanted.src.likemark.model.Likemark;
 import lombok.*;
 
@@ -38,8 +38,6 @@ public class Recruit extends BaseEntity {
 
     private String location;
 
-//    private String address;
-//    private
 
     private LocalDate deadline;
 

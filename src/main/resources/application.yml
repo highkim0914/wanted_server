@@ -22,6 +22,10 @@ spring:
   activate:
     on-profile:
       - local
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
   datasource:
     platform: mysql
     url: jdbc:mysql://localhost:3306/wanted_clone
@@ -49,6 +53,5 @@ spring:
 
 app:
   upload:
-    #dir : /home/ubuntu/wanted/images
     dir : C://wanted//images
-    seperator : //
+    separator : //

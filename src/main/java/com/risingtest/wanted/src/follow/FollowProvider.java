@@ -24,4 +24,8 @@ public class FollowProvider {
     public List<Follow> findAllByUserToken() throws BaseException {
         return findAllByUserId(jwtService.getUserIdx());
     }
+
+    public List<Long> findCompanyIdsByUserToken() throws BaseException{
+        return followRepository.findCompanyIdsByUserIdAndStatus(jwtService.getUserIdx(), 0);
+    }
 }

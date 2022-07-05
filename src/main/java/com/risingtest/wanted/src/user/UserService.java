@@ -19,10 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -41,8 +40,8 @@ public class UserService {
     @Value("${app.upload.dir}")
     private String uploadDir;
 
-    @Value("${app.upload.seperator}")
-    private String seperator;
+    @Value("${app.upload.separator}")
+    private String separator;
 
     private final String USER_IMAGE_PREFIX = "user_image_";
     private final String USER_IMAGE_FOLDER = "users";
@@ -55,14 +54,16 @@ public class UserService {
     }
 
     @Transactional
-    public String saveUserImageAndPatchUserImageUrl(long userId, MultipartFile file) throws BaseException{
-        String photoUrl = saveUserImage(userId,file);
-        patchUserImageUrl(userId,photoUrl);
+    public String saveUserImageAndPatchUserImageUrl(MultipartFile file) throws BaseException {
+        User user = userProvider.findUserWithUserJwtToken();
+        String photoUrl = saveUserImage(user,file);
+        patchUserImageUrl(user,photoUrl);
         return photoUrl;
     }
 
-    public String saveUserImage(long userId, MultipartFile file) throws BaseException{
+    public String saveUserImage(User user, MultipartFile file) throws BaseException {
 
+        long userId = user.getId();
         String originalFileName = file.getOriginalFilename();
         logger.info("uploaded image original file name : "+ originalFileName);
 
@@ -70,37 +71,40 @@ public class UserService {
         if(split.length!=2) {
             throw new BaseException(BaseResponseStatus.UPLOAD_IMAGE_INVALID_FILENAME);
         }
+        String type = split[1];
+
+        String saveFileImage = USER_IMAGE_PREFIX + userId + "." + type;
+
+        String[] pathString = new String[]{uploadDir, USER_IMAGE_FOLDER, saveFileImage};
+
+        Path path = Paths.get(Arrays.stream(pathString)
+                .map(String::valueOf)
+                .collect(Collectors.joining(separator,"","")));
+
+        logger.info("파일 경로 : " + path.toString());
         try {
-            String type = split[1];
+            byte[] bytes = file.getBytes();
+            Files.write(path,bytes);
 
-            String saveFileImage = USER_IMAGE_PREFIX + userId + "." + type;
+            //file.transferTo(path);
 
-            String[] pathString = new String[]{uploadDir,USER_IMAGE_FOLDER,saveFileImage};
-
-            Path path = Paths.get(Arrays.stream(pathString)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(seperator,"","")));
-
-            logger.info(path.toString());
-
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-            StringJoiner joiner = new StringJoiner(seperator,seperator,"");
-            //joiner.add("resources");
-            joiner.add("images");
-            joiner.add(USER_IMAGE_FOLDER);
-            joiner.add(saveFileImage);
-            return joiner.toString();
+            //InputStream in = file.getInputStream();
+            //Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (Exception e){
-            throw new BaseException(BaseResponseStatus.UPLOAD_IMAGE_FAIL);
-        }
+
+
+        StringJoiner joiner = new StringJoiner(separator, separator,"");
+        //joiner.add("resources");
+        joiner.add("images");
+        joiner.add(USER_IMAGE_FOLDER);
+        joiner.add(saveFileImage);
+        return joiner.toString();
     }
 
-    public void patchUserImageUrl(long userId, String photoUrl) throws BaseException{
+    public void patchUserImageUrl(User user, String photoUrl) throws BaseException{
         try {
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new BaseException(USERS_EMPTY_USER_ID));
             user.setPhotoUrl(photoUrl);
             userRepository.save(user);
         }
@@ -111,14 +115,13 @@ public class UserService {
 
     @Transactional
     public void deleteUserImageAndPatchUserImageUrl(long userId) throws BaseException{
-        deleteUserImage(userId);
-        patchUserImageUrl(userId,"");
+        User user = userProvider.findUserWithUserJwtToken();
+        deleteUserImage(user);
+        patchUserImageUrl(user,"");
     }
 
-    public void deleteUserImage(long id) throws BaseException{
+    public void deleteUserImage(User user) throws BaseException{
         try {
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new BaseException(USERS_EMPTY_USER_ID));
             String photoUrl = user.getPhotoUrl();
             String fileName = getImageFileNameFromPhotoUrl(photoUrl);
             File file = new File(uploadDir + File.separator + "users" + File.separator + fileName);
@@ -169,10 +172,12 @@ public class UserService {
 
     public void setCompany(Company company) throws BaseException{
         User user = userProvider.findUserWithUserJwtToken();
-        if(user.getCompany()!=null){
-            throw new BaseException(BaseResponseStatus.USERS_EXISTS_COMPANY);
-        }
         user.setCompany(company);
         user = userRepository.save(user);
+    }
+
+
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 }

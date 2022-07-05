@@ -17,10 +17,14 @@ public class LikemarkProvider {
     JwtService jwtService;
 
     public List<Likemark> findAllByUserId(long userId) throws BaseException{
-        return likemarkRepository.findAllByUserId(userId);
+        return likemarkRepository.findAllByUserIdAndStatus(userId,0);
     }
 
-    public List<Likemark> findAllByUserToken() throws BaseException {
+    public List<Likemark> findAllByUserToken() throws BaseException{
         return findAllByUserId(jwtService.getUserIdx());
+    }
+
+    public List<Long> findRecruitIdsByUserToken() {
+        return likemarkRepository.findRecruitIdsByUserIdAndStatus(jwtService.getUserIdx(),0);
     }
 }

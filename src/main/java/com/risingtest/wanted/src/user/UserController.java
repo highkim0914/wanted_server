@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+
 import static com.risingtest.wanted.config.BaseResponseStatus.*;
 import static com.risingtest.wanted.utils.ValidationRegex.isRegexEmail;
 import static com.risingtest.wanted.utils.ValidationRegex.isRegexPhoneNumber;
@@ -35,20 +37,15 @@ public class UserController {
 
     @PostMapping("/resources/images")
     public BaseResponse<PatchImageRes> uploadUserImage(@RequestPart MultipartFile images){
-        logger.info("uploadUserImage : " + images.getName());
         try {
-            long id = 1;
-            //id = jwtService.getUserIdx();
-            String photoUrl = userService.saveUserImageAndPatchUserImageUrl(id,images);
+            String photoUrl = userService.saveUserImageAndPatchUserImageUrl(images);
             return new BaseResponse<>(new PatchImageRes(photoUrl));
         }
-        catch (BaseException e){
+        catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
-
     }
 
-    @ResponseBody
     @GetMapping("/emails")
     public BaseResponse<BaseResponseStatus> checkAvailableEmail(@RequestParam(name = "email") String email){
         logger.info("checkAvailableEmail : " + email);
@@ -80,7 +77,6 @@ public class UserController {
      * @return BaseResponse<GetUserRes>
      */
     // Path-variable
-    @ResponseBody
     @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
     public BaseResponse<GetUserRes> getUser(@PathVariable("userIdx") int userIdx) {
         // Get Users
@@ -100,7 +96,6 @@ public class UserController {
      * @return BaseResponse<PostUserRes>
      */
     // Body
-    @ResponseBody
     @PostMapping("")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
         logger.info("createUser");
@@ -129,7 +124,6 @@ public class UserController {
      * [POST] /users/logIn
      * @return BaseResponse<PostLoginRes>
      */
-    @ResponseBody
     @PostMapping("/login")
     public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
         logger.info("login");
@@ -148,4 +142,12 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+
+
+    // 마이 원티드 페이지
+    // 지원 현황
+    // 좋아요
+    //북마크
+    //
 }

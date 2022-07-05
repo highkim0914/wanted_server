@@ -7,6 +7,9 @@ import com.risingtest.wanted.src.bookmark.Bookmark;
 import com.risingtest.wanted.src.bookmark.BookmarkService;
 import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.jobapplication.*;
+import com.risingtest.wanted.src.jobapplication.model.JobApplication;
+import com.risingtest.wanted.src.jobapplication.model.JobApplicationFormReq;
+import com.risingtest.wanted.src.jobapplication.model.PostJobApplicationReq;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;
 import com.risingtest.wanted.src.likemark.model.Likemark;
 import com.risingtest.wanted.src.likemark.LikemarkService;
@@ -87,33 +90,14 @@ public class RecruitService {
         return recruit;
     }
 
-
-    public JobApplicationFormReq getJobApplicationReq() throws BaseException{
-        User user = userProvider.findUserWithUserJwtToken();
-        try {
-            List<Resume> resumes = user.getResumes();
-            List<BasicResume> basicResumes = resumes.stream()
-                    .map(BasicResume::from)
-                    .collect(Collectors.toList());
-            JobApplicationFormReq jobApplicationFormReq = JobApplicationFormReq.builder()
-                    .name(user.getUserName())
-                    .email(user.getEmail())
-                    .phoneNumber("")
-                    .recommender("")
-                    .basicResumes(basicResumes)
-                    .build();
-            return jobApplicationFormReq;
-        }
-        catch (Exception e){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-        }
-    }
-
     @Transactional
     public void createJobApplyWithRecruitId(PostJobApplicationReq postJobApplicationReq, long id) throws BaseException{
         try {
             Recruit recruit = recruitProvider.findRecruitById(id);
             Resume resume = resumeProvider.findById(postJobApplicationReq.getResumeId());
+            if(!resume.getIsFinished()){
+                throw new BaseException(BaseResponseStatus.RESUME_NOT_FINISHED);
+            }
             User user = userProvider.findUserWithUserJwtToken();
             if(!resume.getUser().equals(user)){
                 throw new BaseException(BaseResponseStatus.RESUME_NOT_OWNED_BY_USER);
@@ -160,5 +144,9 @@ public class RecruitService {
         catch (Exception e){
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
+    }
+
+    public JobApplicationFormReq getJobApplicationReq() throws BaseException{
+        return jobApplicationService.getJobApplicationReq();
     }
 }

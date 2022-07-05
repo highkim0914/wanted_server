@@ -5,6 +5,7 @@ import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.src.bookmark.BasicBookmark;
 import com.risingtest.wanted.src.follow.model.BasicFollow;
+import com.risingtest.wanted.src.jobapplication.model.BasicJobApplication;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;
 import com.risingtest.wanted.src.user.model.*;
 import com.risingtest.wanted.utils.JwtService;
@@ -94,7 +95,7 @@ public class UserProvider {
 
     }
 
-    public List<BasicBookmark> findBookmarksWithUserToken() throws BaseException{
+    public List<BasicBookmark> findBasicBookmarksWithUserToken() throws BaseException{
         User user = findUserWithUserJwtToken();
         List<BasicBookmark> list = user.getBookmarks().stream()
                 .map(BasicBookmark::from)
@@ -103,7 +104,7 @@ public class UserProvider {
         return list;
     }
 
-    public List<BasicLikemark> findLikemarksWithUserToken() throws BaseException{
+    public List<BasicLikemark> findBasicLikemarksWithUserToken() throws BaseException{
         User user = findUserWithUserJwtToken();
         List<BasicLikemark> list = user.getLikeMarks().stream()
                 .map(BasicLikemark::from)
@@ -112,7 +113,7 @@ public class UserProvider {
         return list;
     }
 
-    public List<BasicFollow> findFollowsWithUserToken() throws BaseException{
+    public List<BasicFollow> findBasicFollowsWithUserToken() throws BaseException{
         User user = findUserWithUserJwtToken();
         List<BasicFollow> list = user.getFollows().stream()
                 .map(BasicFollow::from)
@@ -121,4 +122,12 @@ public class UserProvider {
         return list;
     }
 
+    public List<BasicJobApplication> findBasicJobApplicationsWithUserToken() {
+        User user = findUserWithUserJwtToken();
+        List<BasicJobApplication> list = user.getJobApplications().stream()
+                .filter(basicJobApplication -> basicJobApplication.getStatus()==0)
+                .map(BasicJobApplication::from)
+                .collect(Collectors.toList());
+        return list;
+    }
 }

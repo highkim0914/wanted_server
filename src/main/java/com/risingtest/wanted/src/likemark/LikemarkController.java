@@ -23,7 +23,6 @@ public class LikemarkController {
             List<BasicLikemark> basicLikemarks = likemarkProvider.findAllByUserToken()
                     .stream()
                     .map(BasicLikemark::from)
-                    .filter(basicLikemark -> basicLikemark.getStatus()==0)
                     .collect(Collectors.toList());
             return new BaseResponse<>(basicLikemarks);
         }

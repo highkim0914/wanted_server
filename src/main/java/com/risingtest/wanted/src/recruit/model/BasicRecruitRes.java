@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -42,6 +43,8 @@ public class BasicRecruitRes {
 
     private String[] photos;
 
+    private String profilePhoto;
+
     private long views;
 
     public static BasicRecruitRes from(Recruit recruit) {
@@ -64,6 +67,7 @@ public class BasicRecruitRes {
                 .location(recruit.getLocation())
                 .deadline(recruit.getDeadline())
                 .photos(photoUrlList)
+                .profilePhoto(company.getProfilePhotoUrl())
                 .views(recruit.getViews())
                 .build();
 

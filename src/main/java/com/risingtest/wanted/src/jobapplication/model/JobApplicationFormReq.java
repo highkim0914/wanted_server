@@ -1,4 +1,4 @@
-package com.risingtest.wanted.src.jobapplication;
+package com.risingtest.wanted.src.jobapplication.model;
 
 import com.risingtest.wanted.src.resume.model.BasicResume;
 import lombok.*;

@@ -19,6 +19,12 @@ public class PostUserReq {
                 .email(email)
                 .password(password)
                 .phoneNumber(phoneNumber)
+                .career(0)
+                .jobGroup("")
+                .lookingForJob(LookingForJobStatus.LOOKINGFORJOB)
+                .positions("")
+                .techStacks("")
+                .communityNickname("")
                 .build();
     }
 }

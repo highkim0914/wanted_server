@@ -12,6 +12,7 @@ import com.risingtest.wanted.src.recruit.model.GetRecruitRes;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.user.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class RecruitProvider {
     @Autowired
     private BookmarkProvider bookmarkProvider;
 
-    public RecruitsAndBookmarksRes getRecruitsWithFilter(String jobGroup, List<Integer> years, List<String> positions, List<String> locations, List<Long> hashtags, List<Long> techStacks) {
+    public RecruitsAndBookmarksRes getRecruitsWithFilter(String jobGroup, List<Integer> years, List<String> positions, List<String> locations, List<Long> hashtags, List<Long> techStacks, Pageable pageable) {
         Specification<Recruit> spec = Specification.where(RecruitSpecification.betweenYears(years));
 
         if(!jobGroup.equals(""))
@@ -53,7 +54,7 @@ public class RecruitProvider {
         if(!techStacks.isEmpty())
             spec = spec.and(RecruitSpecification.containsTechstack(techStacks));
 
-        List<BasicRecruitRes> list = recruitRepository.findAll(spec).stream().distinct()
+        List<BasicRecruitRes> list = recruitRepository.findAll(spec,pageable).stream().distinct()
                 .map(BasicRecruitRes::from)
                 .collect(Collectors.toList());
         try {

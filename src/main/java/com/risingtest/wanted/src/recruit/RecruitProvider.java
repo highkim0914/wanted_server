@@ -2,7 +2,7 @@ package com.risingtest.wanted.src.recruit;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.bookmark.BasicBookmark;
+import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
 import com.risingtest.wanted.src.bookmark.BookmarkProvider;
 import com.risingtest.wanted.src.company.CompanyProvider;
 import com.risingtest.wanted.src.company.model.Company;
@@ -10,6 +10,7 @@ import com.risingtest.wanted.src.likemark.LikemarkProvider;
 import com.risingtest.wanted.src.recruit.model.BasicRecruitRes;
 import com.risingtest.wanted.src.recruit.model.GetRecruitRes;
 import com.risingtest.wanted.src.recruit.model.Recruit;
+import com.risingtest.wanted.src.recruit.model.RecruitsAndBookmarksRes;
 import com.risingtest.wanted.src.user.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -68,7 +69,7 @@ public class RecruitProvider {
 
     public Recruit findRecruitById(long id) throws BaseException {
         Recruit recruit = recruitRepository.findById(id)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.GET_RECRUIT_NO_RECRUIT));
+                .orElseThrow(()->new BaseException(BaseResponseStatus.NO_RECRUIT));
         return recruit;
     }
 

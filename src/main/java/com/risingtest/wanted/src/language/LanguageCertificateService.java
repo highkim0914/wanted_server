@@ -2,6 +2,9 @@ package com.risingtest.wanted.src.language;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
+import com.risingtest.wanted.src.language.model.BasicLanguageCertificate;
+import com.risingtest.wanted.src.language.model.LanguageCertificate;
+import com.risingtest.wanted.src.language.model.LanguageSkill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

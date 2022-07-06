@@ -1,12 +1,12 @@
 package com.risingtest.wanted.src.recruit.model;
 
-import com.risingtest.wanted.src.bookmark.BasicBookmark;
+import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
 import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.follow.model.BasicFollow;
-import com.risingtest.wanted.src.hashtag.CompanyHashtag;
+import com.risingtest.wanted.src.hashtag.model.CompanyHashtag;
 import com.risingtest.wanted.src.hashtag.model.Hashtag;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;
-import com.risingtest.wanted.src.techstack.CompanyTechstack;
+import com.risingtest.wanted.src.techstack.model.CompanyTechstack;
 import com.risingtest.wanted.src.techstack.model.Techstack;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

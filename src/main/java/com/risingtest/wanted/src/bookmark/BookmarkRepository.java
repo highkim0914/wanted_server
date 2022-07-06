@@ -1,5 +1,6 @@
 package com.risingtest.wanted.src.bookmark;
 
+import com.risingtest.wanted.src.bookmark.model.Bookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;

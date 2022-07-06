@@ -2,14 +2,15 @@ package com.risingtest.wanted.src.career;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.result.Result;
+import com.risingtest.wanted.src.career.model.BasicCareer;
+import com.risingtest.wanted.src.career.model.Career;
+import com.risingtest.wanted.src.result.model.Result;
 import com.risingtest.wanted.src.result.ResultService;
 import com.risingtest.wanted.src.resume.model.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

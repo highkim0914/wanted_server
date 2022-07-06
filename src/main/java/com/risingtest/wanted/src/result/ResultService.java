@@ -2,11 +2,12 @@ package com.risingtest.wanted.src.result;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.career.Career;
+import com.risingtest.wanted.src.career.model.Career;
+import com.risingtest.wanted.src.result.model.BasicResult;
+import com.risingtest.wanted.src.result.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

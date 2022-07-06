@@ -2,8 +2,8 @@ package com.risingtest.wanted.src.recruit;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.bookmark.BasicBookmark;
-import com.risingtest.wanted.src.bookmark.Bookmark;
+import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
+import com.risingtest.wanted.src.bookmark.model.Bookmark;
 import com.risingtest.wanted.src.bookmark.BookmarkService;
 import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.jobapplication.*;
@@ -16,7 +16,6 @@ import com.risingtest.wanted.src.likemark.LikemarkService;
 import com.risingtest.wanted.src.recruit.model.PostRecruitReq;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.resume.ResumeProvider;
-import com.risingtest.wanted.src.resume.model.BasicResume;
 import com.risingtest.wanted.src.resume.model.Resume;
 import com.risingtest.wanted.src.user.UserProvider;
 import com.risingtest.wanted.src.user.model.User;
@@ -25,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RecruitService {
@@ -86,7 +83,7 @@ public class RecruitService {
 
     public Recruit checkRecruitId(long recruitId) throws BaseException{
         Recruit recruit = recruitRepository.findById(recruitId)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.GET_RECRUIT_NO_RECRUIT));
+                .orElseThrow(()->new BaseException(BaseResponseStatus.NO_RECRUIT));
         return recruit;
     }
 
@@ -132,13 +129,13 @@ public class RecruitService {
         Recruit recruit = recruitProvider.findRecruitById(recruitId);
         if(recruit.getCompany().getId()!=company.getId())
             throw new BaseException(BaseResponseStatus.COMPANY_NOT_OWNER_OF_RECRUIT);
-        recruit.setTitle(postRecruitReq.getTitle());
-        recruit.setDeadline(postRecruitReq.getDeadline());
-        recruit.setDetail(postRecruitReq.getDetail());
-        recruit.setJobGroup(postRecruitReq.getJobGroup());
-        recruit.setPosition(postRecruitReq.getPosition());
-        recruit.setCareer(postRecruitReq.getCareer());
         try {
+            recruit.setTitle(postRecruitReq.getTitle());
+            recruit.setDeadline(postRecruitReq.getDeadline());
+            recruit.setDetail(postRecruitReq.getDetail());
+            recruit.setJobGroup(postRecruitReq.getJobGroup());
+            recruit.setPosition(postRecruitReq.getPosition());
+            recruit.setCareer(postRecruitReq.getCareer());
             return recruitRepository.save(recruit);
         }
         catch (Exception e){
@@ -148,5 +145,17 @@ public class RecruitService {
 
     public JobApplicationFormReq getJobApplicationReq() throws BaseException{
         return jobApplicationService.getJobApplicationReq();
+    }
+
+    @Transactional
+    public void deleteRecruit(long recruitId) throws BaseException{
+        Recruit recruit = recruitProvider.findRecruitById(recruitId);
+        User user = userProvider.findUserWithUserJwtToken();
+
+        if(recruit.getCompany().getId()!=user.getCompany().getId()){
+            throw new BaseException(BaseResponseStatus.USER_NOT_OWNER_OF_COMPANY);
+        }
+        recruit.setStatus(1);
+        recruitRepository.save(recruit);
     }
 }

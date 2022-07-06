@@ -5,6 +5,10 @@ import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.src.company.model.BasicCompany;
 import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.follow.FollowProvider;
+import com.risingtest.wanted.src.jobapplication.JobApplicationProvider;
+import com.risingtest.wanted.src.jobapplication.JobApplicationService;
+import com.risingtest.wanted.src.jobapplication.model.BasicJobApplication;
+import com.risingtest.wanted.src.recruit.RecruitProvider;
 import com.risingtest.wanted.src.user.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,9 @@ public class CompanyProvider {
     @Autowired
     private FollowProvider followProvider;
 
+    @Autowired
+    private JobApplicationProvider jobApplicationProvider;
+
     public Company findById(long id) throws BaseException {
         return companyRepository.findById(id)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_COMPANY));
@@ -40,5 +47,13 @@ public class CompanyProvider {
         return companies.stream()
                 .map(BasicCompany::from)
                 .collect(Collectors.toList());
+    }
+
+
+    public List<BasicJobApplication> getJobApplicationsOfRecruit(long recruitId) throws BaseException {
+        List<BasicJobApplication> basicJobApplications = jobApplicationProvider.findApplicationsWithRecruit(recruitId).stream()
+                .map(BasicJobApplication::from)
+                .collect(Collectors.toList());
+        return basicJobApplications;
     }
 }

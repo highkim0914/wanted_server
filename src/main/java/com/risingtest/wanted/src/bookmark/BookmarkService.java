@@ -2,15 +2,13 @@ package com.risingtest.wanted.src.bookmark;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
+import com.risingtest.wanted.src.bookmark.model.Bookmark;
 import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.LockModeType;
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class BookmarkService {

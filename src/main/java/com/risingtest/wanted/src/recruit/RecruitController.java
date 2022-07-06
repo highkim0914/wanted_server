@@ -3,12 +3,13 @@ package com.risingtest.wanted.src.recruit;
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponse;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.bookmark.BasicBookmark;
+import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
 import com.risingtest.wanted.src.company.CompanyProvider;
 import com.risingtest.wanted.src.jobapplication.model.JobApplicationFormReq;
 import com.risingtest.wanted.src.jobapplication.model.PostJobApplicationReq;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;
 import com.risingtest.wanted.src.recruit.model.GetRecruitRes;
+import com.risingtest.wanted.src.recruit.model.RecruitsAndBookmarksRes;
 import com.risingtest.wanted.utils.ValidationRegex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +50,11 @@ public class RecruitController {
 
     @GetMapping
     public BaseResponse<RecruitsAndBookmarksRes> getRecruitsWithFilter(@RequestParam(name = "job_group", defaultValue = "") String jobGroup,
-                                                             @RequestParam(name = "years", defaultValue = "0") List<Integer> years,
-                                                             @RequestParam(name = "positions", defaultValue = "") List<String> positions,
-                                                             @RequestParam(name = "locations", defaultValue = "") List<String> locations,
-                                                             @RequestParam(name = "hashtags", defaultValue = "") List<Long> hashtags,
-                                                             @RequestParam(name = "techstacks", defaultValue = "") List<Long> techstacks,
+                                                                       @RequestParam(name = "years", defaultValue = "0") List<Integer> years,
+                                                                       @RequestParam(name = "positions", defaultValue = "") List<String> positions,
+                                                                       @RequestParam(name = "locations", defaultValue = "") List<String> locations,
+                                                                       @RequestParam(name = "hashtags", defaultValue = "") List<Long> hashtags,
+                                                                       @RequestParam(name = "techstacks", defaultValue = "") List<Long> techstacks,
                                                                        Pageable pageable
     ){
         logger.info("getRecruitsWithFilter : " + jobGroup + " " + years + " " + positions + " " + locations + " " + hashtags + " " + techstacks);

@@ -3,11 +3,12 @@ package com.risingtest.wanted.src.recruit.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
-import com.risingtest.wanted.src.bookmark.Bookmark;
+import com.risingtest.wanted.src.bookmark.model.Bookmark;
 import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.jobapplication.model.JobApplication;
 import com.risingtest.wanted.src.likemark.model.Likemark;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Where(clause = "status = 0")
 public class Recruit extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,9 +3,9 @@ package com.risingtest.wanted.src.company.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.risingtest.wanted.config.BaseEntity;
 import com.risingtest.wanted.src.follow.model.Follow;
-import com.risingtest.wanted.src.hashtag.CompanyHashtag;
+import com.risingtest.wanted.src.hashtag.model.CompanyHashtag;
 import com.risingtest.wanted.src.recruit.model.Recruit;
-import com.risingtest.wanted.src.techstack.CompanyTechstack;
+import com.risingtest.wanted.src.techstack.model.CompanyTechstack;
 import com.risingtest.wanted.src.user.model.User;
 import lombok.*;
 

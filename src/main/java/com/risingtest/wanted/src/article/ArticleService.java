@@ -2,12 +2,13 @@ package com.risingtest.wanted.src.article;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.articlecomment.ArticleComment;
+import com.risingtest.wanted.src.article.model.Article;
+import com.risingtest.wanted.src.article.model.PostArticleReq;
+import com.risingtest.wanted.src.articlecomment.model.ArticleComment;
 import com.risingtest.wanted.src.articlecomment.ArticleCommentRepository;
-import com.risingtest.wanted.src.articlecomment.PostArticleCommentReq;
-import com.risingtest.wanted.src.articlelikemark.ArticleLikemark;
+import com.risingtest.wanted.src.articlecomment.model.PostArticleCommentReq;
+import com.risingtest.wanted.src.articlelikemark.model.ArticleLikemark;
 import com.risingtest.wanted.src.articlelikemark.ArticleLikemarkRepository;
-import com.risingtest.wanted.src.articlelikemark.BasicArticleLikemark;
 import com.risingtest.wanted.src.user.UserProvider;
 import com.risingtest.wanted.src.user.UserService;
 import com.risingtest.wanted.src.user.model.User;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -54,8 +54,10 @@ public class ArticleService {
 
     public ArticleComment createCommentWith(PostArticleCommentReq postArticleCommentReq) throws BaseException{
         User user = userProvider.findUserWithUserJwtToken();
+        if(user.getCommunityNickname().equals("")){
+            throw new BaseException(BaseResponseStatus.USER_NO_COMMUNITY_NICKNAME);
+        }
         Article article = articleProvider.getArticleById(postArticleCommentReq.getArticleId());
-
         ArticleComment articleComment = postArticleCommentReq.toEntity(article,user);
         return articleCommentRepository.save(articleComment);
     }

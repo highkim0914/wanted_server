@@ -35,17 +35,17 @@ public class JobApplication extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ApplicationStatus applicationStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resume_id",nullable = false,updatable = false)
     @JsonBackReference
     private Resume resume;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false,updatable = false)
     @JsonBackReference
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruit_id",nullable = false,updatable = false)
     @JsonBackReference
     private Recruit recruit;

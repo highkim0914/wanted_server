@@ -24,7 +24,7 @@ public class LikemarkProvider {
         return findAllByUserId(jwtService.getUserIdx());
     }
 
-    public List<Long> findRecruitIdsByUserToken() {
+    public List<Long> findRecruitIdsByUserToken() throws BaseException{
         return likemarkRepository.findRecruitIdsByUserIdAndStatus(jwtService.getUserIdx(),0);
     }
 }

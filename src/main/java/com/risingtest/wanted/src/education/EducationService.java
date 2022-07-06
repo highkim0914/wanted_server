@@ -2,12 +2,13 @@ package com.risingtest.wanted.src.education;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
+import com.risingtest.wanted.src.education.model.BasicEducation;
+import com.risingtest.wanted.src.education.model.Education;
 import com.risingtest.wanted.src.resume.model.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

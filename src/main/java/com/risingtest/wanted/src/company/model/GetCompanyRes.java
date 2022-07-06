@@ -1,6 +1,6 @@
 package com.risingtest.wanted.src.company.model;
 
-import com.risingtest.wanted.src.hashtag.CompanyHashtag;
+import com.risingtest.wanted.src.hashtag.model.CompanyHashtag;
 
 import java.util.Arrays;
 import java.util.List;

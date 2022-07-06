@@ -3,15 +3,9 @@ package com.risingtest.wanted.src.resume;
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
 import com.risingtest.wanted.src.award.AwardService;
-import com.risingtest.wanted.src.award.BasicAward;
-import com.risingtest.wanted.src.career.BasicCareer;
 import com.risingtest.wanted.src.career.CareerService;
-import com.risingtest.wanted.src.education.BasicEducation;
 import com.risingtest.wanted.src.education.EducationService;
 import com.risingtest.wanted.src.jobapplication.JobApplicationService;
-import com.risingtest.wanted.src.language.BasicLanguageSkill;
-import com.risingtest.wanted.src.language.LanguageSkill;
-import com.risingtest.wanted.src.language.LanguageSkillRepository;
 import com.risingtest.wanted.src.language.LanguageSkillService;
 import com.risingtest.wanted.src.resume.model.Resume;
 import com.risingtest.wanted.src.resume.model.ResumeDto;
@@ -21,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.stream.Collectors;
 
 @Service
 public class ResumeService {
@@ -90,7 +83,6 @@ public class ResumeService {
             resume.setIntroduction(resume.getIntroduction());
             resume.setExternalLink(resumeDto.getExternalLink());
             resume.setSkills(String.join( ",",resumeDto.getSkills().toArray(new String[0])));
-//            resume.updateCareers(resumeDto.getCareers());
             careerService.updateCareerByBasicCareer(resumeDto.getCareers(),resume);
             awardService.updateAwardByBasicAward(resumeDto.getAwards(),resume);
             educationService.updateEducationByBasicEducation(resumeDto.getEducations(),resume);
@@ -110,7 +102,7 @@ public class ResumeService {
         User user = userProvider.findUserWithUserJwtToken();
         Resume resume = resumeProvider.findById(resumeId);
         if(resume.getUser().getId()!=user.getId()){
-            throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
+            throw new BaseException(BaseResponseStatus.RESUME_NOT_OWNED_BY_USER);
         }
         try {
             resume.setStatus(1);

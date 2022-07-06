@@ -1,10 +1,10 @@
 package com.risingtest.wanted.src.resume.model;
 
-import com.risingtest.wanted.src.award.BasicAward;
-import com.risingtest.wanted.src.career.BasicCareer;
-import com.risingtest.wanted.src.education.BasicEducation;
+import com.risingtest.wanted.src.award.model.BasicAward;
+import com.risingtest.wanted.src.career.model.BasicCareer;
+import com.risingtest.wanted.src.education.model.BasicEducation;
 import com.risingtest.wanted.src.jobapplication.model.BasicJobApplication;
-import com.risingtest.wanted.src.language.BasicLanguageSkill;
+import com.risingtest.wanted.src.language.model.BasicLanguageSkill;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

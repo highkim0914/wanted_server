@@ -3,7 +3,7 @@ package com.risingtest.wanted.src.user;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.bookmark.BasicBookmark;
+import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
 import com.risingtest.wanted.src.follow.model.BasicFollow;
 import com.risingtest.wanted.src.jobapplication.model.BasicJobApplication;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;

@@ -1,8 +1,8 @@
 package com.risingtest.wanted.src.recruit;
 
-import com.risingtest.wanted.src.hashtag.CompanyHashtag;
+import com.risingtest.wanted.src.hashtag.model.CompanyHashtag;
 import com.risingtest.wanted.src.recruit.model.Recruit;
-import com.risingtest.wanted.src.techstack.CompanyTechstack;
+import com.risingtest.wanted.src.techstack.model.CompanyTechstack;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;

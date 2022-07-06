@@ -2,7 +2,6 @@ package com.risingtest.wanted.src.techstack.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.risingtest.wanted.config.BaseEntity;
-import com.risingtest.wanted.src.techstack.CompanyTechstack;
 import lombok.*;
 
 import javax.persistence.*;

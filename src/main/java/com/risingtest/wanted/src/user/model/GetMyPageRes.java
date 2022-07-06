@@ -1,7 +1,5 @@
 package com.risingtest.wanted.src.user.model;
 
-import com.risingtest.wanted.src.bookmark.BasicBookmark;
-import com.risingtest.wanted.src.follow.model.BasicFollow;
 import com.risingtest.wanted.src.jobapplication.model.BasicJobApplication;
 import com.risingtest.wanted.src.recruit.model.BasicRecruitRes;
 import lombok.AllArgsConstructor;

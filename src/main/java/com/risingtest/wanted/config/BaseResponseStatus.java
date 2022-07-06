@@ -43,7 +43,7 @@ public enum BaseResponseStatus {
 
     LOGIN_USER_NO_EMAIL(false,2030,"존재하지 않는 이메일입니다."),
 
-    GET_RECRUIT_NO_RECRUIT(false, 2060, "존재하지 않는 채용 공고입니다."),
+    NO_RECRUIT(false, 2060, "존재하지 않는 채용 공고입니다."),
     GET_RECRUIT_TOO_MANY_YEARS(false, 2061, "years는 최대 2개까지만 사용 가능합니다."),
 
     POST_BOOKMARK_EXISTS(false,2070,"이미 북마크되어 있는 채용공고입니다."),

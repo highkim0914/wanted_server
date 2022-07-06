@@ -1,11 +1,11 @@
 package com.risingtest.wanted.src.bookmark;
 
 import com.risingtest.wanted.config.BaseException;
+import com.risingtest.wanted.src.bookmark.model.Bookmark;
 import com.risingtest.wanted.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 
 @Service

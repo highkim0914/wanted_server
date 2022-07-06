@@ -2,10 +2,11 @@ package com.risingtest.wanted.src.article;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.articlecomment.BasicArticleComment;
+import com.risingtest.wanted.src.article.model.Article;
+import com.risingtest.wanted.src.article.model.BasicArticle;
+import com.risingtest.wanted.src.article.model.BasicArticleBoard;
+import com.risingtest.wanted.src.articlecomment.model.BasicArticleComment;
 import com.risingtest.wanted.src.articlelikemark.ArticleLikemarkRepository;
-import com.risingtest.wanted.src.articlelikemark.BasicArticleLikemark;
-import com.risingtest.wanted.src.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

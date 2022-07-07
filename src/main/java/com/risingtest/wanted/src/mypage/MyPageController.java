@@ -12,6 +12,8 @@ import com.risingtest.wanted.src.user.model.GetMyPageRes;
 import com.risingtest.wanted.src.user.model.PostUserReq;
 import com.risingtest.wanted.src.user.model.ProfilesOfUser;
 import com.risingtest.wanted.utils.ValidationRegex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/mypages")
 public class MyPageController {
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private MyPageService myPageService;
 
@@ -37,6 +41,7 @@ public class MyPageController {
 
     @GetMapping
     public BaseResponse<GetMyPageRes> getMyPage(){
+        logger.info("getMyPage");
         try {
             GetMyPageRes getMyPageRes = myPageProvider.getMyPage();
             return new BaseResponse<>(getMyPageRes);
@@ -48,6 +53,7 @@ public class MyPageController {
 
     @GetMapping("/likemarks")
     public BaseResponse<List<BasicRecruitRes>> getLikemarks(){
+        logger.info("getLikemarks");
         try {
             List<BasicRecruitRes> basicRecruitRes = recruitProvider.findRecruitWithLikemarks();
             return new BaseResponse<>(basicRecruitRes);
@@ -59,6 +65,7 @@ public class MyPageController {
 
     @GetMapping("/bookmarks")
     public BaseResponse<List<BasicRecruitRes>> getBookmarks(){
+        logger.info("getBookmarks");
         try {
             List<BasicRecruitRes> basicRecruitRes = recruitProvider.findRecruitWithBookmarks();
             return new BaseResponse<>(basicRecruitRes);
@@ -70,6 +77,7 @@ public class MyPageController {
 
     @GetMapping("/follows")
     public BaseResponse<List<BasicCompany>> getFollows(){
+        logger.info("getFollows");
         try {
             List<BasicCompany> companies = companyProvider.findCompanyWithFollows();
             return new BaseResponse<>(companies);
@@ -81,6 +89,7 @@ public class MyPageController {
 
     @PatchMapping("/infos")
     public BaseResponse<BaseResponseStatus> patchUserInfo(@RequestBody PostUserReq postUserReq){
+        logger.info("patchUserInfo");
         if(!ValidationRegex.isRegexPhoneNumber(postUserReq.getPhoneNumber())){
             return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_PHONE_NUMBER);
         }
@@ -99,6 +108,7 @@ public class MyPageController {
 
     @GetMapping("/profiles")
     public BaseResponse<ProfilesOfUser> getProfile(){
+        logger.info("getProfile");
         try {
             ProfilesOfUser profilesOfUser = myPageProvider.getUserProfiles();
 
@@ -111,6 +121,7 @@ public class MyPageController {
 
     @PatchMapping("/profiles")
     public BaseResponse<BaseResponseStatus> patchProfile(@RequestBody ProfilesOfUser profilesOfUser){
+        logger.info("patchProfile");
         try {
             myPageService.patchUserProfiles(profilesOfUser);
             return new BaseResponse<>(BaseResponseStatus.SUCCESS);

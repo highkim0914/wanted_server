@@ -22,8 +22,10 @@ public class LanguageSkillService {
     @Transactional
     public void updateLanguageSkillByBasicLanguageSkill(List<BasicLanguageSkill> languageSkills, Resume resume) throws BaseException{
         List<LanguageSkill> languageSkills1 = resume.getLanguageSkills();
-        for(LanguageSkill languageSkill : languageSkills1){
-            languageSkill.setStatus(1);
+        if(!languageSkills1.isEmpty()) {
+            for (LanguageSkill languageSkill : languageSkills1) {
+                languageSkill.setStatus(1);
+            }
         }
         for(BasicLanguageSkill basicLanguageSkill : languageSkills){
             LanguageSkill languageSkill;

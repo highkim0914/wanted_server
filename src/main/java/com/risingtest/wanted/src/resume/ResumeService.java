@@ -80,7 +80,7 @@ public class ResumeService {
             resume.setName(resumeDto.getName());
             resume.setEmail(resumeDto.getEmail());
             resume.setPhoneNumber(resumeDto.getPhoneNumber());
-            resume.setIntroduction(resume.getIntroduction());
+            resume.setIntroduction(resumeDto.getIntroduction());
             resume.setExternalLink(resumeDto.getExternalLink());
             resume.setSkills(String.join( ",",resumeDto.getSkills().toArray(new String[0])));
             careerService.updateCareerByBasicCareer(resumeDto.getCareers(),resume);
@@ -92,7 +92,11 @@ public class ResumeService {
             }
             return resumeRepository.save(resume);
         }
+        catch (BaseException e){
+            throw e;
+        }
         catch (Exception e){
+            e.printStackTrace();
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }

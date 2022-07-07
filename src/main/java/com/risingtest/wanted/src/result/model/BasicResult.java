@@ -14,6 +14,8 @@ import java.time.LocalDate;
 public class BasicResult {
     private long id;
 
+    private String title;
+
     private LocalDate startDate;
 
     private LocalDate endDate;
@@ -26,6 +28,7 @@ public class BasicResult {
                 .startDate(result.getStartDate())
                 .endDate(result.getEndDate())
                 .detail(result.getDetail())
+                .title(result.getTitle())
                 .build();
     }
 
@@ -37,6 +40,7 @@ public class BasicResult {
         resultBuilder.startDate(startDate);
         resultBuilder.endDate(endDate);
         resultBuilder.detail(detail);
+        resultBuilder.title(title);
         return resultBuilder.build();
     }
 }

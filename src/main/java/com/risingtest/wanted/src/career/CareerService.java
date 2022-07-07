@@ -24,8 +24,10 @@ public class CareerService {
     @Transactional
     public void updateCareerByBasicCareer(List<BasicCareer> basicCareers, Resume resume) throws BaseException{
         List<Career> careers = resume.getCareers();
-        for(Career career : careers){
-            career.setStatus(1);
+        if(!careers.isEmpty()) {
+            for (Career career : careers) {
+                career.setStatus(1);
+            }
         }
         for(BasicCareer basicCareer : basicCareers){
             Career career;

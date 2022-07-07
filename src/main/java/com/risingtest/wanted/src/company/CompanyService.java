@@ -94,6 +94,7 @@ public class CompanyService {
         try {
             String photoUrl = resultJoiner.toString();
             company.setPhotoUrl(photoUrl);
+            companyRepository.save(company);
             return photoUrl;
         }
         catch (Exception e){
@@ -112,6 +113,7 @@ public class CompanyService {
         }
         String profilePhotoUrl = uploadFile(file,company.getId(),0);
         company.setProfilePhotoUrl(profilePhotoUrl);
+        companyRepository.save(company);
         return profilePhotoUrl;
     }
 

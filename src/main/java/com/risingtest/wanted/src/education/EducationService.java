@@ -19,8 +19,10 @@ public class EducationService {
     @Transactional
     public void updateEducationByBasicEducation(List<BasicEducation> basicEducations, Resume resume) throws BaseException{
         List<Education> educations = resume.getEducations();
-        for(Education education : educations){
-            education.setStatus(1);
+        if(!educations.isEmpty()) {
+            for (Education education : educations) {
+                education.setStatus(1);
+            }
         }
         for(BasicEducation basicEducation : basicEducations){
             Education education;

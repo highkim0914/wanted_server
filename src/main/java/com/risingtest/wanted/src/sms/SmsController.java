@@ -9,12 +9,15 @@ import com.risingtest.wanted.src.sms.model.PostSmsReq;
 import com.risingtest.wanted.utils.JwtService;
 import com.risingtest.wanted.utils.ValidationRegex;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sms")
 public class SmsController {
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final SmsService smsService;
 
@@ -24,6 +27,7 @@ public class SmsController {
     }
     @PostMapping
     public BaseResponse<String> createAuthenticationCode(@RequestBody PostSmsReq postSmsReq){
+        logger.info("createAuthenticationCode : " + postSmsReq.getPhoneNumber());
         if(!ValidationRegex.isRegexPhoneNumber(postSmsReq.getPhoneNumber())){
             return new BaseResponse<>(BaseResponseStatus.SMS_INVALID_PHONE_NUMBER);
         }
@@ -38,6 +42,7 @@ public class SmsController {
 
     @PostMapping("/authentication")
     public BaseResponse<PostSmsAuthenticationRes> authenticateCode(@RequestBody PostSmsAuthenticationReq postSmsAuthenticationReq){
+        logger.info("authenticateCode : " + postSmsAuthenticationReq.getPhoneNumber());
         if(!ValidationRegex.isRegexPhoneNumber(postSmsAuthenticationReq.getPhoneNumber())){
             return new BaseResponse<>(BaseResponseStatus.SMS_INVALID_PHONE_NUMBER);
         }

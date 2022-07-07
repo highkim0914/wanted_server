@@ -53,3 +53,7 @@ Pageable 활용하여 채용공고 필터 부분에 정렬 기능 추가
 ### - 2022.07.06
 API 명세서 추가 - 삭제 기능 및 상태 코드 추가  
 validation 점검 및 보충
+
+### - 2022.07.07  
+API 명세서 수정 - result 스키마 추가  
+cors 에러 다시 남.. -> CorsConfigurationSource로 해결

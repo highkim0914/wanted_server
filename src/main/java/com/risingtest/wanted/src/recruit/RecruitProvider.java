@@ -55,7 +55,7 @@ public class RecruitProvider {
         if(!techStacks.isEmpty())
             spec = spec.and(RecruitSpecification.containsTechstack(techStacks));
 
-        List<BasicRecruitRes> list = recruitRepository.findAll(spec,pageable).stream().distinct()
+        List<BasicRecruitRes> list = recruitRepository.findAll(spec, pageable).stream().distinct()
                 .map(BasicRecruitRes::from)
                 .collect(Collectors.toList());
         try {

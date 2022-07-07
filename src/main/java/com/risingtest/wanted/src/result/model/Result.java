@@ -31,6 +31,8 @@ public class Result extends BaseEntity {
 
     private String detail;
 
+    private String title;
+
     @ManyToOne
     @JoinColumn(name = "career_id",nullable = false,updatable = false)
     @JsonBackReference

@@ -7,6 +7,8 @@ import com.risingtest.wanted.src.resume.model.BasicResume;
 import com.risingtest.wanted.src.resume.model.Resume;
 import com.risingtest.wanted.src.resume.model.ResumeDto;
 import com.risingtest.wanted.utils.ValidationRegex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ public class ResumeController {
     // 이름만 바꾸기 가능
     // 삭제 기능
     //
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     ResumeService resumeService;
@@ -33,6 +36,7 @@ public class ResumeController {
 
     @GetMapping("")
     public BaseResponse<List<BasicResume>> getResumes(){
+        logger.info("getResumes");
         try {
             List<Resume> resumes = resumeProvider.findAllWithUserToken();
             List<BasicResume> basicResumes = resumes.stream()
@@ -47,6 +51,7 @@ public class ResumeController {
 
     @PostMapping("")
     public BaseResponse<ResumeDto> createResume(){
+        logger.info("createResume");
         try {
             Resume resume = resumeService.createResume();
             return new BaseResponse<>(ResumeDto.from(resume));
@@ -58,6 +63,7 @@ public class ResumeController {
 
     @GetMapping("/{resumeId}")
     public BaseResponse<ResumeDto> getResumeById(@PathVariable long resumeId){
+        logger.info("getResumeById : " + resumeId);
         try {
             Resume resume = resumeProvider.findById(resumeId);
             return new BaseResponse<>(ResumeDto.from(resume));
@@ -69,6 +75,7 @@ public class ResumeController {
 
     @PostMapping("/{resumeId}")
     public BaseResponse<BaseResponseStatus> deleteResume(@PathVariable long resumeId){
+        logger.info("deleteResume : " + resumeId);
         try {
             resumeService.deleteResume(resumeId);
             return new BaseResponse<>(BaseResponseStatus.SUCCESS);
@@ -82,6 +89,7 @@ public class ResumeController {
     public BaseResponse<BaseResponseStatus> updateResume(@RequestBody ResumeDto resumeDto,
                                                          @PathVariable long resumeId,
                                                          @RequestParam(value = "permanent", defaultValue = "false") boolean isPermanent){
+        logger.info("updateResume : " + resumeId);
         if(resumeDto.getIntroduction().length()<400 && isPermanent){
             return new BaseResponse<>(BaseResponseStatus.INVALID_INTRODUCTION);
         }

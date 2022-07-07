@@ -19,8 +19,10 @@ public class AwardService {
     @Transactional
     public void updateAwardByBasicAward(List<BasicAward> basicAwards, Resume resume) throws BaseException{
         List<Award> awards = resume.getAwards();
-        for(Award award : awards){
-            award.setStatus(1);
+        if(!awards.isEmpty()) {
+            for (Award award : awards) {
+                award.setStatus(1);
+            }
         }
         for(BasicAward basicAward : basicAwards){
             Award award;

@@ -25,7 +25,7 @@ public class ResultService {
             if(basicResult.getId()!=0){
                 result = resultRepository.findById(basicResult.getId())
                         .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_RESULT));
-
+                result.setTitle(basicResult.getTitle());
                 result.setStartDate(basicResult.getStartDate());
                 result.setEndDate(basicResult.getEndDate());
                 result.setStatus(0);

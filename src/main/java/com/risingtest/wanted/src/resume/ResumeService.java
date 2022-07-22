@@ -82,7 +82,10 @@ public class ResumeService {
             resume.setPhoneNumber(resumeDto.getPhoneNumber());
             resume.setIntroduction(resumeDto.getIntroduction());
             resume.setExternalLink(resumeDto.getExternalLink());
-            resume.setSkills(String.join( ",",resumeDto.getSkills().toArray(new String[0])));
+            if(!resumeDto.getSkills().get(0).equals(""))
+                resume.setSkills(String.join( ",",resumeDto.getSkills().toArray(new String[0])));
+            else
+                resume.setSkills("");
             careerService.updateCareerByBasicCareer(resumeDto.getCareers(),resume);
             awardService.updateAwardByBasicAward(resumeDto.getAwards(),resume);
             educationService.updateEducationByBasicEducation(resumeDto.getEducations(),resume);

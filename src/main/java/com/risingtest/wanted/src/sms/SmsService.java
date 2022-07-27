@@ -2,7 +2,6 @@ package com.risingtest.wanted.src.sms;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.config.secret.Secret;
 import com.risingtest.wanted.src.sms.model.PostSmsAuthenticationReq;
 import com.risingtest.wanted.src.sms.model.PostSmsAuthenticationRes;
 import com.risingtest.wanted.utils.JwtService;
@@ -12,6 +11,7 @@ import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,18 +27,21 @@ public class SmsService {
 
     private JwtService jwtService;
 
+    @Value("${spring.sms.api-caller}")
+    private String SMS_API_CALLER;
+
     private Map<String, String> phoneNumberCodeMap = new HashMap<>();
 
     @Autowired
-    public SmsService(JwtService jwtService) {
+    public SmsService(JwtService jwtService, @Value("${spring.sms.api-key}") String SMS_API_KEY, @Value("${spring.sms.api-secret-key}") String SMS_API_SECRET_KEY) {
         this.jwtService = jwtService;
-        this.messageService = NurigoApp.INSTANCE.initialize(Secret.SMS_API_KEY, Secret.SMS_API_SECRET_KEY, "https://api.coolsms.co.kr");
+        this.messageService = NurigoApp.INSTANCE.initialize(SMS_API_KEY, SMS_API_SECRET_KEY, "https://api.coolsms.co.kr");
     }
 
     public SingleMessageSentResponse sendOne(String phoneNumber) throws BaseException {
         Message message = new Message();
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-        message.setFrom(Secret.SMS_API_CALLER);
+        message.setFrom(SMS_API_CALLER);
         message.setTo(phoneNumber);
         String randomString = String.valueOf(generateAuthNo1());
         message.setText("인증번호 ["+ randomString + "] 를 입력해주세요");

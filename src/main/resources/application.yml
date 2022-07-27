@@ -51,9 +51,6 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
-  jwt:
-    secret-key: SECRET_KEY
-
 app:
   upload:
     dir : C://wanted//images

@@ -36,3 +36,8 @@ spring:
     property-naming-strategy: SNAKE_CASE
   jwt:
     secret-key: SECRET_KEY_TEST
+
+app:
+  upload:
+    dir : C://wanted//images
+    separator : //

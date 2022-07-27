@@ -4,15 +4,8 @@ server:
   servlet:
     encoding:
       charset: UTF-8
-#  tomcat:
-#    threads:
-#      min-spare: 10
-#      max: 20
-#
 logging:
   level:
-#    com.zaxxer.hikari.HikariConfig: DEBUG
-#    com.zaxxer.hikari: TRACE
     com.risingtest.wanted: INFO
 
 spring:

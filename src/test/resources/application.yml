@@ -38,6 +38,9 @@ spring:
     secret-key: SECRET_KEY_TEST
 
 app:
+  sms:
+    api-key: not-real-api-key
+    api-secret-key: not-real-api-key
   upload:
     dir : C://wanted//images
     separator : //

@@ -36,11 +36,12 @@ spring:
     property-naming-strategy: SNAKE_CASE
   jwt:
     secret-key: SECRET_KEY_TEST
-
-app:
   sms:
     api-key: not-real-api-key
     api-secret-key: not-real-api-key
+    api-caller : 01000000000
+
+app:
   upload:
     dir : C://wanted//images
     separator : //

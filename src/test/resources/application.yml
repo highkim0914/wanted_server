@@ -1,0 +1,38 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+
+logging:
+  level:
+    com.risingtest.wanted: INFO
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      max-file-size: 10MB
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    url: jdbc:h2:mem:sampleairbnb_test;
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql : true
+    defer-datasource-initialization: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  jwt:
+    secret-key: SECRET_KEY_TEST

@@ -42,7 +42,8 @@ public enum BaseResponseStatus {
     COMPANY_NOT_OWNER_OF_RECRUIT(false,2025,"현재 회사의 채용 공고가 아닙니다."),
 
     LOGIN_USER_NO_EMAIL(false,2030,"존재하지 않는 이메일입니다."),
-
+    SORT_PARAMETER_ORDER_ERROR(false, 2041, "asc(오름차순) 또는 desc(내림차순)으로 요청해주세요."),
+    SORT_PARAMETER_ERROR(false, 2042, "지원하지 않는 정렬 파라미터입니다."),
     NO_RECRUIT(false, 2060, "존재하지 않는 채용 공고입니다."),
     GET_RECRUIT_TOO_MANY_YEARS(false, 2061, "years는 최대 2개까지만 사용 가능합니다."),
 

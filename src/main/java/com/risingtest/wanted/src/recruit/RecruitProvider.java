@@ -13,7 +13,8 @@ import com.risingtest.wanted.src.recruit.model.Recruit;
 import com.risingtest.wanted.src.recruit.model.RecruitsAndBookmarksRes;
 import com.risingtest.wanted.src.user.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,27 @@ public class RecruitProvider {
     @Autowired
     private BookmarkProvider bookmarkProvider;
 
-    public RecruitsAndBookmarksRes getRecruitsWithFilter(String jobGroup, List<Integer> years, List<String> positions, List<String> locations, List<Long> hashtags, List<Long> techStacks, Pageable pageable) throws BaseException{
+    private PageRequest getPageRequestFrom(int size, int page, String sortString) throws BaseException{
+        PageRequest pageRequest;
+        if(sortString.contains(",")) {
+            String[] sortInfos = sortString.split(",");
+            String schema = sortInfos[0];
+            String sc = sortInfos[1];
+            if(!sc.equals("desc") && !sc.equals("asc")){
+                throw new BaseException(BaseResponseStatus.SORT_PARAMETER_ORDER_ERROR);
+            }
+            Sort sort = Sort.by(Sort.Direction.fromString(sc),schema);
+            pageRequest = PageRequest.of(page, size, sort);
+        }
+        else{
+            Sort sort = Sort.by(sortString);
+            pageRequest = PageRequest.of(page,size,sort);
+        }
+        return pageRequest;
+    }
+
+    public RecruitsAndBookmarksRes getRecruitsWithFilter(String jobGroup, List<Integer> years, List<String> positions, List<String> locations, List<Long> hashtags, List<Long> techStacks, int size, int page, String sortString) throws BaseException{
+        PageRequest pageRequest = getPageRequestFrom(size, page, sortString);
         Specification<Recruit> spec = Specification.where(RecruitSpecification.betweenYears(years));
 
         if(!jobGroup.equals(""))
@@ -58,7 +79,7 @@ public class RecruitProvider {
 
         List<BasicRecruitRes> list;
         try {
-            list = recruitRepository.findAll(spec, pageable).stream().distinct()
+            list = recruitRepository.findAll(spec, pageRequest).stream().distinct()
                     .map(BasicRecruitRes::from)
                     .collect(Collectors.toList());
         }

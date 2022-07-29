@@ -14,8 +14,6 @@ import com.risingtest.wanted.utils.ValidationRegex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,28 +59,12 @@ public class RecruitController {
                                                                        @RequestParam(name = "sort", defaultValue = "responseRate,desc") String sortString
 //                                                                       @PageableDefault(size = 20,sort = {"responseRate"}, direction = Sort.Direction.DESC) Pageable pageRequest
     ){
-        PageRequest pageRequest;
-        if(sortString.contains(",")) {
-            String[] sortInfos = sortString.split(",");
-            String schema = sortInfos[0];
-            String sc = sortInfos[1];
-            if(!sc.equals("desc") && !sc.equals("asc")){
-                return new BaseResponse<>(BaseResponseStatus.SORT_PARAMETER_ORDER_ERROR);
-            }
-            Sort sort = Sort.by(Sort.Direction.fromString(sc),schema);
-            pageRequest = PageRequest.of(page, size, sort);
-        }
-        else{
-            Sort sort = Sort.by(sortString);
-            pageRequest = PageRequest.of(page,size,sort);
-        }
-
         logger.info("getRecruitsWithFilter : " + jobGroup + " " + years + " " + positions + " " + locations + " " + hashtags + " " + techstacks);
         if(years.size()>2){
             return new BaseResponse<>(BaseResponseStatus.GET_RECRUIT_TOO_MANY_YEARS);
         }
         try {
-            RecruitsAndBookmarksRes recruitsAndBookmarksRes = recruitProvider.getRecruitsWithFilter(jobGroup, years,  positions, locations, hashtags, techstacks, pageRequest);
+            RecruitsAndBookmarksRes recruitsAndBookmarksRes = recruitProvider.getRecruitsWithFilter(jobGroup, years,  positions, locations, hashtags, techstacks, size, page, sortString);
             return new BaseResponse<>(recruitsAndBookmarksRes);
         }
         catch (BaseException e){

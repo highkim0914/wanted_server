@@ -2,8 +2,8 @@ package com.risingtest.wanted.src.recruit;
 
 import com.risingtest.wanted.config.BaseException;
 import com.risingtest.wanted.config.BaseResponseStatus;
-import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
 import com.risingtest.wanted.src.bookmark.BookmarkProvider;
+import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
 import com.risingtest.wanted.src.company.CompanyProvider;
 import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.likemark.LikemarkProvider;
@@ -15,6 +15,7 @@ import com.risingtest.wanted.src.user.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,7 +42,7 @@ public class RecruitProvider {
     @Autowired
     private BookmarkProvider bookmarkProvider;
 
-    public RecruitsAndBookmarksRes getRecruitsWithFilter(String jobGroup, List<Integer> years, List<String> positions, List<String> locations, List<Long> hashtags, List<Long> techStacks, Pageable pageable) {
+    public RecruitsAndBookmarksRes getRecruitsWithFilter(String jobGroup, List<Integer> years, List<String> positions, List<String> locations, List<Long> hashtags, List<Long> techStacks, Pageable pageable) throws BaseException{
         Specification<Recruit> spec = Specification.where(RecruitSpecification.betweenYears(years));
 
         if(!jobGroup.equals(""))
@@ -55,9 +56,15 @@ public class RecruitProvider {
         if(!techStacks.isEmpty())
             spec = spec.and(RecruitSpecification.containsTechstack(techStacks));
 
-        List<BasicRecruitRes> list = recruitRepository.findAll(spec, pageable).stream().distinct()
-                .map(BasicRecruitRes::from)
-                .collect(Collectors.toList());
+        List<BasicRecruitRes> list;
+        try {
+            list = recruitRepository.findAll(spec, pageable).stream().distinct()
+                    .map(BasicRecruitRes::from)
+                    .collect(Collectors.toList());
+        }
+        catch (PropertyReferenceException e){
+            throw new BaseException(BaseResponseStatus.SORT_PARAMETER_ERROR);
+        }
         try {
             List<BasicBookmark> bookmarkList = userProvider.findBasicBookmarksWithUserToken();
             return new RecruitsAndBookmarksRes(list,bookmarkList);

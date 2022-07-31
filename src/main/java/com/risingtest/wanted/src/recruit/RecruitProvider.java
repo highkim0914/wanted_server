@@ -7,13 +7,11 @@ import com.risingtest.wanted.src.bookmark.model.BasicBookmark;
 import com.risingtest.wanted.src.company.CompanyProvider;
 import com.risingtest.wanted.src.company.model.Company;
 import com.risingtest.wanted.src.likemark.LikemarkProvider;
-import com.risingtest.wanted.src.recruit.model.BasicRecruitRes;
-import com.risingtest.wanted.src.recruit.model.GetRecruitRes;
-import com.risingtest.wanted.src.recruit.model.Recruit;
-import com.risingtest.wanted.src.recruit.model.RecruitsAndBookmarksRes;
+import com.risingtest.wanted.src.recruit.model.*;
 import com.risingtest.wanted.src.user.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -62,8 +60,15 @@ public class RecruitProvider {
         return pageRequest;
     }
 
-    public RecruitsAndBookmarksRes getRecruitsWithFilter(String jobGroup, List<Integer> years, List<String> positions, List<String> locations, List<Long> hashtags, List<Long> techStacks, int size, int page, String sortString) throws BaseException{
-        PageRequest pageRequest = getPageRequestFrom(size, page, sortString);
+    public RecruitsAndBookmarksRes getRecruitsWithFilter(GetRecruitsReq getRecruitsReq) throws BaseException{
+        PageRequest pageRequest = getPageRequestFrom(getRecruitsReq.getSize(), getRecruitsReq.getPage(), getRecruitsReq.getSortString());
+
+        String jobGroup = getRecruitsReq.getJobGroup();
+        List<Integer> years = getRecruitsReq.getYears();
+        List<String> positions = getRecruitsReq.getPositions();
+        List<String> locations = getRecruitsReq.getLocations();
+        List<Long> hashtags = getRecruitsReq.getHashtags();
+        List<Long> techStacks = getRecruitsReq.getTechstacks();
         Specification<Recruit> spec = Specification.where(RecruitSpecification.betweenYears(years));
 
         if(!jobGroup.equals(""))
@@ -79,7 +84,8 @@ public class RecruitProvider {
 
         List<BasicRecruitRes> list;
         try {
-            list = recruitRepository.findAll(spec, pageRequest).stream().distinct()
+            Slice<Recruit> recruits = recruitRepository.findAll(spec, pageRequest);
+            list = recruits.stream().distinct()
                     .map(BasicRecruitRes::from)
                     .collect(Collectors.toList());
         }

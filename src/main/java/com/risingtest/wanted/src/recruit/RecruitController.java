@@ -9,14 +9,13 @@ import com.risingtest.wanted.src.jobapplication.model.JobApplicationFormReq;
 import com.risingtest.wanted.src.jobapplication.model.PostJobApplicationReq;
 import com.risingtest.wanted.src.likemark.model.BasicLikemark;
 import com.risingtest.wanted.src.recruit.model.GetRecruitRes;
+import com.risingtest.wanted.src.recruit.model.GetRecruitsReq;
 import com.risingtest.wanted.src.recruit.model.RecruitsAndBookmarksRes;
 import com.risingtest.wanted.utils.ValidationRegex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/recruits")
@@ -48,23 +47,14 @@ public class RecruitController {
     }
 
     @GetMapping
-    public BaseResponse<RecruitsAndBookmarksRes> getRecruitsWithFilter(@RequestParam(name = "job_group", defaultValue = "") String jobGroup,
-                                                                       @RequestParam(name = "years", defaultValue = "0") List<Integer> years,
-                                                                       @RequestParam(name = "positions", defaultValue = "") List<String> positions,
-                                                                       @RequestParam(name = "locations", defaultValue = "") List<String> locations,
-                                                                       @RequestParam(name = "hashtags", defaultValue = "") List<Long> hashtags,
-                                                                       @RequestParam(name = "techstacks", defaultValue = "") List<Long> techstacks,
-                                                                       @RequestParam(name = "size", defaultValue = "20") int size,
-                                                                       @RequestParam(name = "page", defaultValue = "0") int page,
-                                                                       @RequestParam(name = "sort", defaultValue = "responseRate,desc") String sortString
-//                                                                       @PageableDefault(size = 20,sort = {"responseRate"}, direction = Sort.Direction.DESC) Pageable pageRequest
-    ){
-        logger.info("getRecruitsWithFilter : " + jobGroup + " " + years + " " + positions + " " + locations + " " + hashtags + " " + techstacks);
-        if(years.size()>2){
+    public BaseResponse<RecruitsAndBookmarksRes> getRecruitsWithFilter(GetRecruitsReq getRecruitsReq){
+        logger.info("getRecruitsWithFilter : " + getRecruitsReq.toString());
+
+        if(getRecruitsReq.getYears().size()>2){
             return new BaseResponse<>(BaseResponseStatus.GET_RECRUIT_TOO_MANY_YEARS);
         }
         try {
-            RecruitsAndBookmarksRes recruitsAndBookmarksRes = recruitProvider.getRecruitsWithFilter(jobGroup, years,  positions, locations, hashtags, techstacks, size, page, sortString);
+            RecruitsAndBookmarksRes recruitsAndBookmarksRes = recruitProvider.getRecruitsWithFilter(getRecruitsReq);
             return new BaseResponse<>(recruitsAndBookmarksRes);
         }
         catch (BaseException e){

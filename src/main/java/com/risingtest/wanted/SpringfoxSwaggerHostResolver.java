@@ -24,12 +24,8 @@ public class SpringfoxSwaggerHostResolver implements WebMvcOpenApiTransformation
         OpenAPI swagger = context.getSpecification();
 
         Server server = swagger.getServers().get(0);
-        if (server.getUrl().contains(":80")) {
-            server.setUrl(server.getUrl().replace(":80",":443").replace("http://","https://"));
-        }
-        else{
-            server.setUrl("https://dev.odoong.shop:443");
-        }
+        server.setUrl("https://dev.odoong.shop:443");
+
 
         return swagger;
     }

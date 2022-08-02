@@ -25,11 +25,14 @@ public class SpringfoxSwaggerHostResolver implements WebMvcOpenApiTransformation
 
     @Override
     public OpenAPI transform(OpenApiTransformationContext<HttpServletRequest> context) {
+        logger.info("swagger OAS_30 - transform servers");
         OpenAPI swagger = context.getSpecification();
 
         Server server = swagger.getServers().get(0);
         server.setUrl("https://dev.odoong.shop:443");
+        server.setDescription("dev 서버");
         logger.info(server.getUrl());
+        logger.info(server.getDescription());
         return swagger;
     }
 }
